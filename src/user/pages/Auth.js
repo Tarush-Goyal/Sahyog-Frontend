@@ -43,7 +43,8 @@ const Auth = () => {
         {
           ...formState.inputs,
           name: undefined,
-          image: undefined
+          image: undefined,
+          type: undefined
         },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
@@ -67,6 +68,7 @@ const Auth = () => {
   };
 
   const authSubmitHandler = async event => {
+    console.log("entered authsubmit");
     event.preventDefault();
 
     if (isLoginMode) {
@@ -87,12 +89,14 @@ const Auth = () => {
       } catch (err) {}
     } else {
       try {
+        console.log("value"+formState.inputs.type.value);
         const formData = new FormData();
         formData.append('email', formState.inputs.email.value);
         formData.append('name', formState.inputs.name.value);
         formData.append('password', formState.inputs.password.value);
         formData.append('image', formState.inputs.image.value);
-        formData.append('description',"abcd");
+        // formData.append('description',"abcd");
+        formData.append('type',formState.inputs.type.value);
         const responseData = await sendRequest(
           'http://localhost:5000/api/users/signup',
           'POST',
@@ -100,7 +104,9 @@ const Auth = () => {
         );
 
         auth.login(responseData.userId, responseData.token);
-      } catch (err) {}
+      } catch (err) {
+        console.log("error: "+err);
+      }
     }
   };
 
@@ -149,6 +155,17 @@ const Auth = () => {
             errorText="Please enter a valid password, at least 6 characters."
             onInput={inputHandler}
           />
+          {!isLoginMode && (
+            <div>
+          <p>Select your user type</p>
+          <input type="radio" id="homeowner" name="type" value="homeowner" defaultChecked/>home
+          {/* <label for="homeowner">Homeowner</label> */}
+          <input type="radio" id="head" name="type" value="head"/>head
+          {/* <label for="head">NGO Head</label> */}
+          <input type="radio" id="volunteer" name="type" value="volunteer"/>volunteer
+          {/* <label for="volunteer">Volunteer</label> */}
+          </div>
+          )}
           <Button type="submit" disabled={!formState.isValid}>
             {isLoginMode ? 'LOGIN' : 'SIGNUP'}
           </Button>
