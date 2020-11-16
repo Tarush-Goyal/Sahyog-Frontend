@@ -26,8 +26,9 @@ const MainNavigation = props => {
           <NavLinks />
         </nav>
       </SideDrawer>
+      <MainHeader></MainHeader>
 
-      <MainHeader>
+      {/* <MainHeader>
         <button
           className="main-navigation__menu-btn"
           onClick={openDrawerHandler}
@@ -42,7 +43,7 @@ const MainNavigation = props => {
         <nav className="main-navigation__header-nav">
           <NavLinks />
         </nav>
-      </MainHeader>
+      </MainHeader> */}
     </React.Fragment>
   );
 };

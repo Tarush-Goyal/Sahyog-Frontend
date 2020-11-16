@@ -11,6 +11,7 @@ import NewPlace from './places/pages/NewPlace';
 import UserPlaces from './places/pages/UserPlaces';
 import UpdatePlace from './places/pages/UpdatePlace';
 import Auth from './user/pages/Auth';
+import SimpleTabs from './shared/components/material-ui/SimpleTabs';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
@@ -43,7 +44,8 @@ const App = () => {
       <Switch>
         <Route path="/" exact>
          {/* <Users /> */}
-         <Auth />
+         {/* <Auth /> */}
+         <SimpleTabs></SimpleTabs>
         </Route>
         <Route path="/:userId/places" exact>
           <UserPlaces />
