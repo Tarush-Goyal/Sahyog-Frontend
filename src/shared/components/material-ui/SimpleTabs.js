@@ -6,8 +6,6 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-
-// import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
@@ -73,35 +71,23 @@ export default function SimpleTabs() {
   };
 
   return (
-
-    
     <div className={classes.root}>
-        {/* <Card className={classes.rootCard}> */}
-        {/* <CardContent> */}
         <Card className="authentication">
       <AppBar position="static">
-      {/* <Paper square> */}
-        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example"  variant="fullWidth"
-          >
+        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example"  variant="fullWidth"  >
           <Tab label="Login" {...a11yProps(0)} />
-          
-          {/* <Tab lavel="dfrgtyhuj" {...a11yProps(1)}/> */}
           <Tab label="Signup" style={{paddingLeft: 0, paddingRight: 0}} {...a11yProps(1)} />
         </Tabs>
       </AppBar>
-      {/* </Paper> */}
       <TabPanel value={value} index={0}>
         Login
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Auth></Auth>
-        {/* werty */}
       </TabPanel>
       <TabPanel value={value} index={2}>
         Item Three
       </TabPanel>
-      {/* </CardContent> */}
-    {/* </Card> */}
     </Card>
     </div>
     

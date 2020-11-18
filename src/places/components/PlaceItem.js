@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 
 import Card from '../../shared/components/UIElements/Card';
-import Button from '../../shared/components/FormElements/Button';
+// import Button from '../../shared/components/FormElements/Button';
 import Modal from '../../shared/components/UIElements/Modal';
 import Map from '../../shared/components/UIElements/Map';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
@@ -52,7 +52,7 @@ const PlaceItem = props => {
         header={props.address}
         contentClass="place-item__modal-content"
         footerClass="place-item__modal-actions"
-        footer={<Button onClick={closeMapHandler}>CLOSE</Button>}
+        // footer={<Button onClick={closeMapHandler}>CLOSE</Button>}
       >
         <div className="map-container">
           <Map center={props.coordinates} zoom={16} />
@@ -65,12 +65,12 @@ const PlaceItem = props => {
         footerClass="place-item__modal-actions"
         footer={
           <React.Fragment>
-            <Button inverse onClick={cancelDeleteHandler}>
+            {/* <Button inverse onClick={cancelDeleteHandler}>
               CANCEL
             </Button>
             <Button danger onClick={confirmDeleteHandler}>
               DELETE
-            </Button>
+            </Button> */}
           </React.Fragment>
         }
       >
@@ -94,17 +94,19 @@ const PlaceItem = props => {
             <p>{props.description}</p>
           </div>
           <div className="place-item__actions">
-            <Button inverse onClick={openMapHandler}>
+            {/* <Button inverse onClick={openMapHandler}>
               VIEW ON MAP
-            </Button>
+            </Button> */}
             {auth.userId === props.creatorId && (
-              <Button to={`/places/${props.id}`}>EDIT</Button>
+              <buttton to={`/places/${props.id}`}/>
+              // <Button to={`/places/${props.id}`}>EDIT</Button>
             )}
 
             {auth.userId === props.creatorId && (
-              <Button danger onClick={showDeleteWarningHandler}>
-                DELETE
-              </Button>
+              <buttton to={`/places/${props.id}`}/>
+              // <Button danger onClick={showDeleteWarningHandler}>
+              //   DELETE
+              // </Button>
             )}
           </div>
         </Card>

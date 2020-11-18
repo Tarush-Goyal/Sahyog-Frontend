@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 
-import Button from './Button';
+// import Button from './Button';
+import Button from '@material-ui/core/Button';
 import './ImageUpload.css';
 
 const ImageUpload = props => {
@@ -53,9 +54,9 @@ const ImageUpload = props => {
       <div className={`image-upload ${props.center && 'center'}`}>
         <div className="image-upload__preview">
           {previewUrl && <img src={previewUrl} alt="Preview" />}
-          {!previewUrl && <p>Please pick an image.</p>}
+          {!previewUrl && <p>Image</p>}
         </div>
-        <Button type="button" onClick={pickImageHandler}>
+        <Button type="button" variant="contained" color="primary" onClick={pickImageHandler}>
           PICK IMAGE
         </Button>
       </div>
