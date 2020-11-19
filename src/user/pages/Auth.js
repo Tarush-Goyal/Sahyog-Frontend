@@ -13,7 +13,7 @@ import Input from '../../shared/components/FormElements/Input';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import ImageUpload from '../../shared/components/FormElements/ImageUpload';
-// import { useForm } from '../../shared/hooks/form-hook';
+import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import './Auth.css';
@@ -65,9 +65,10 @@ const Auth = () => {
   const classes = useStyles();
   const classes2 = useStyles2();
   
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [formValid,setFormValid] = useState(false);
+  const [activeStep, setActiveStep] = React.useState(0)
+  const [imageValid, setImageValid] = useState(false);
   const [validation, setValidation] = useState({
-    formValid: false,
       errorCount: null,
       errors: {
         firstName: '',
@@ -75,15 +76,34 @@ const Auth = () => {
         email: '',
         password: '',
         nameNGO: ''
+      },
+      values:{
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        nameNGO: '',
+        descriptionNGO: ''
       }
   })
 
+  const imageChange = () => {
+    console.log("entered");
+    setFormValid(true);
+    setImageValid(formState.isValid);
+    if(validation.errors.firstName.length>1 || validation.errors.lastName.length>1 || validation.errors.email.length>1 || validation.errors.password.length>1 || validation.errors.nameNGO.length>1){
+      setFormValid(false);
+    }
+  }
+
   const handleFormChange = (event) => {
     event.preventDefault();
+    setFormValid(true);
     const { name, value } = event.target;
     // const copyState={...validation};
     // const errors={...copyState.errors};
     let errors = validation.errors;
+    let values = validation.values;
 
     switch (name) {
       case 'firstName': 
@@ -91,45 +111,60 @@ const Auth = () => {
           value.length < 1
             ? 'First Name is required!'
             : '';
+           values.firstName=value;
         break;
         case 'lastName': 
         errors.lastName = 
           value.length < 1
             ? 'Last Name is required!'
             : '';
+            values.lastName=value;
         break;
       case 'email': 
         errors.email = 
           validEmailRegex.test(value)
             ? ''
             : 'Email is not valid!';
+            values.email=value;
         break;
       case 'password': 
         errors.password = 
           value.length < 6
             ? 'Password must be 6 characters long!'
             : '';
+            values.password=value;
         break;
         case 'nameNGO': 
         errors.nameNGO = 
           value.length < 1
             ? 'Name of NGO is required!'
             : '';
+            values.nameNGO=value;
+        break;
+        case 'descriptionNGO': 
+            values.descriptionNGO=value;
         break;
       default:
         break;
     }
+
+    if(errors.firstName.length>1 || errors.lastName.length>1 || errors.email.length>1 || errors.password.length>1 || errors.nameNGO.length>1 || imageValid===false){
+      setFormValid(false);
+    }
+    
+    
     setValidation(
       prevState=>({
         ...prevState,
-        errors:{...errors}
+        errors:{...errors},
+        values:{...values}
       })
     );
   }
 
   const steps = getSteps();
   const auth = useContext(AuthContext);
-  const [isLoginMode, setIsLoginMode] = useState(true);
+  const [isLoginMode, setIsLoginMode] = useState(false);
   let [user1,setUser] = useState('homeowner');
 
   const [value, setValue] = React.useState('female');
@@ -155,6 +190,20 @@ const Auth = () => {
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
+
+  const [formState, inputHandler, setFormData] = useForm(
+    {
+      email: {
+        value: '',
+        isValid: false
+      },
+      password: {
+        value: '',
+        isValid: false
+      }
+    },
+    false
+  );
 
   const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
   
@@ -197,7 +246,7 @@ const Auth = () => {
   </Box>
   <Box display="flex" flexDirection="row" justifyContent="space-around" m={1}>
       <TextField id="email" name="email" type="text" label="Email" error={validation.errors.email.length>0} helperText={validation.errors.email} onBlur={handleFormChange} onChange={handleFormChange} style={{ width: '10rem' }}/>
-      <TextField id="password" name="password" type="text" label="Password" error={validation.errors.password.length>0} helperText={validation.errors.password} onBlur={handleFormChange} onChange={handleFormChange} style={{ width: '10rem' }}/>
+      <TextField id="password" name="password" type="password" label="Password" error={validation.errors.password.length>0} helperText={validation.errors.password} onBlur={handleFormChange} onChange={handleFormChange} style={{ width: '10rem' }}/>
   </Box>
   <Box display="flex" flexDirection="row" justifyContent="space-around" m={1}>
       {(user1==='head'||user1==='volunteer' )&&(
@@ -212,6 +261,7 @@ const Auth = () => {
           label="Date of Birth"
           format="MM/dd/yyyy"
           value={selectedDate}
+          name="date"
           onChange={handleDateChange}
           KeyboardButtonProps={{
             'aria-label': 'change date',
@@ -225,12 +275,20 @@ const Auth = () => {
             <ImageUpload
               center
               id="image"
-              errorText="Please provide a profile picture."
+              name="image"
+              errorText="Please provide a profile picture"
               style={{width:"100%"}}
+              onInput={inputHandler}
+              updateImage={(event)=>{imageChange()}}
               m={1}
             />
 
           </Box>
+         
+          <Button variant="contained" color="primary" type="submit" disabled={!formValid}>
+                Submit
+              </Button>
+         
         </form>);
       default:
         return 'Unknown stepIndex';
@@ -239,6 +297,7 @@ const Auth = () => {
 
   const authSubmitHandler = async event => {
     event.preventDefault();
+    // console.log("submitted form"+formState.inputs.image.value);
 
     if (isLoginMode) {
       try {
@@ -258,19 +317,22 @@ const Auth = () => {
       } catch (err) {}
     } else {
       try {
-        var rates=document.getElementsByName('type');
-      var rate_value;
-      for(var i = 0; i < rates.length; i++){
-          if(rates[i].checked){
-              rate_value = rates[i].value;
-          }
-      }
+        
         const formData = new FormData();
-        // formData.append('email', formState.inputs.email.value);
-        // formData.append('name', formState.inputs.name.value);
-        // formData.append('password', formState.inputs.password.value);
-        // formData.append('image', formState.inputs.image.value);
-        formData.append('type',rate_value);
+        formData.append('email', validation.values.email);
+        formData.append('firstName', validation.values.firstName);
+        formData.append('lastName', validation.values.lastName);
+        formData.append('password', validation.values.password);
+        formData.append('nameNGO', validation.values.nameNGO);
+        formData.append('descriptionNGO', validation.values.descriptionNGO);
+        formData.append('date', selectedDate);
+        formData.append('image', formState.inputs.image.value);
+        formData.append('type', value);
+
+      //   for (var pair of formData.entries()) {
+      //     console.log(pair[0]+ ', ' + pair[1]); 
+      // }
+
         const responseData = await sendRequest(
           'http://localhost:5000/api/users/signup',
           'POST',
@@ -317,8 +379,7 @@ const Auth = () => {
             {activeStep === steps.length - 1 && (
               <Button variant="contained" color="primary"
                 onClick={handleBack}
-                className={classes.backButton}
-              >
+                className={classes.backButton}>
                 Back
               </Button>
               )}
@@ -332,10 +393,6 @@ const Auth = () => {
         )}
       </div>
     </div>
-        
-        {/* <Button color="primary" variant="contained" onClick={switchModeHandler}>
-          SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
-        </Button> */}
     </React.Fragment>
   );
 };
