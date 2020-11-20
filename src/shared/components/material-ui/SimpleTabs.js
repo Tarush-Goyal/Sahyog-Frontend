@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
 import Auth from '../../../user/pages/Auth';
+import Login from '../../../user/pages/Login';
 import Card from '../UIElements/Card';
 import './SimpleTabs.css';
 
@@ -80,7 +81,7 @@ export default function SimpleTabs() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        Login
+        <Login></Login>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Auth></Auth>
