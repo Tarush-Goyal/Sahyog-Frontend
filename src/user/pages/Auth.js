@@ -343,11 +343,13 @@ const Auth = () => {
               </Box>
               {user1 === "head" && (
                 <TextField
-                  id='description'
+                  id='descriptionNGO'
                   name='descriptionNGO'
                   type='text'
                   label='Description of NGO'
                   multiline
+                  onBlur={handleFormChange}
+                  onChange={handleFormChange}
                   m={1}
                 />
               )}
@@ -382,48 +384,31 @@ const Auth = () => {
   const authSubmitHandler = async (event) => {
     event.preventDefault();
 
-    if (isLoginMode) {
-      try {
-        const responseData = await sendRequest(
-          "http://localhost:5000/api/users/login",
-          "POST",
-          JSON.stringify({
-            // email: formState.inputs.email.value,
-            // password: formState.inputs.password.value
-          }),
-          {
-            "Content-Type": "application/json",
-          }
-        );
-        auth.login(responseData.userId, responseData.token);
-      } catch (err) {}
-    } else {
-      try {
-        const formData = new FormData();
-        formData.append("email", validation.values.email);
-        formData.append("firstName", validation.values.firstName);
-        formData.append("lastName", validation.values.lastName);
-        formData.append("password", validation.values.password);
-        formData.append("nameNGO", validation.values.nameNGO);
-        formData.append("descriptionNGO", validation.values.descriptionNGO);
-        formData.append("date", selectedDate);
-        formData.append("image", formState.inputs.image.value);
-        formData.append("type", value);
+    try {
+      const formData = new FormData();
+      formData.append("email", validation.values.email);
+      formData.append("firstName", validation.values.firstName);
+      formData.append("lastName", validation.values.lastName);
+      formData.append("password", validation.values.password);
+      formData.append("nameNGO", validation.values.nameNGO);
+      formData.append("descriptionNGO", validation.values.descriptionNGO);
+      formData.append("date", selectedDate);
+      formData.append("image", formState.inputs.image.value);
+      formData.append("type", value);
 
-        // for (var pair of formData.entries()) {
-        //   console.log(pair[0] + ", " + pair[1]);
-        // }
+      // for (var pair of formData.entries()) {
+      //   console.log(pair[0] + ", " + pair[1]);
+      // }
 
-        const responseData = await sendRequest(
-          "http://localhost:5000/api/users/signup",
-          "POST",
-          formData
-        );
+      const responseData = await sendRequest(
+        "http://localhost:5000/api/users/signup",
+        "POST",
+        formData
+      );
 
-        auth.login(responseData.userId, responseData.token);
-      } catch (err) {
-        console.log("error: " + err);
-      }
+      auth.login(responseData.userId, responseData.token);
+    } catch (err) {
+      console.log("error: " + err);
     }
   };
 

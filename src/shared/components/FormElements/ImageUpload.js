@@ -1,10 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from "react";
 
 // import Button from './Button';
-import Button from '@material-ui/core/Button';
-import './ImageUpload.css';
+import Button from "@material-ui/core/Button";
+import "./ImageUpload.css";
 
-const ImageUpload = props => {
+const ImageUpload = (props) => {
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState();
   const [isValid, setIsValid] = useState(false);
@@ -22,7 +22,7 @@ const ImageUpload = props => {
     fileReader.readAsDataURL(file);
   }, [file]);
 
-  const pickedHandler = event => {
+  const pickedHandler = (event) => {
     let pickedFile;
     let fileIsValid = isValid;
     if (event.target.files && event.target.files.length === 1) {
@@ -42,22 +42,28 @@ const ImageUpload = props => {
   };
 
   return (
-    <div className="form-control">
+    <div className='form-control'>
       <input
         id={props.id}
         ref={filePickerRef}
-        style={{ display: 'none' }}
-        type="file"
-        accept=".jpg,.png,.jpeg"
+        style={{ display: "none" }}
+        type='file'
+        accept='.jpg,.png,.jpeg'
         onChange={pickedHandler}
       />
-      <div className={`image-upload ${props.center && 'center'}`}>
-        <div className="image-upload__preview">
-          {previewUrl && <img src={previewUrl} alt="Preview" />}
+      <div className={`image-upload ${props.center && "center"}`}>
+        <div className='image-upload__preview'>
+          {previewUrl && <img src={previewUrl} alt='Preview' />}
           {!previewUrl && <p>Image</p>}
         </div>
-        <Button type="button" variant="contained" color="primary" onClick={()=>{pickImageHandler();
-        props.updateImage();}}>
+        <Button
+          type='button'
+          variant='contained'
+          color='primary'
+          onClick={() => {
+            pickImageHandler();
+            props.updateImage();
+          }}>
           PICK IMAGE
         </Button>
       </div>

@@ -31,25 +31,23 @@ const Login = () => {
   });
 
   const validEmailRegex = RegExp(
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/
   );
 
   const authSubmitHandler = async (event) => {
     event.preventDefault();
 
     try {
-      const formData = new FormData();
-      formData.append("email", validation.values.email);
-      formData.append("password", validation.values.password);
-
-      for (var pair of formData.entries()) {
-        console.log(pair[0] + ", " + pair[1]);
-      }
-
       const responseData = await sendRequest(
         "http://localhost:5000/api/users/login",
         "POST",
-        formData
+        JSON.stringify({
+          email: validation.values.email,
+          password: validation.values.password,
+        }),
+        {
+          "Content-Type": "application/json",
+        }
       );
 
       auth.login(responseData.userId, responseData.token);
