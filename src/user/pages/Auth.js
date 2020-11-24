@@ -406,7 +406,11 @@ const Auth = () => {
         formData
       );
 
-      auth.login(responseData.userId, responseData.token);
+      auth.login(
+        responseData.userId,
+        responseData.token
+        // ,responseData.type
+      );
     } catch (err) {
       console.log("error: " + err);
     }

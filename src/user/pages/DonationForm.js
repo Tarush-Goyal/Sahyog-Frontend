@@ -86,7 +86,7 @@ const DonationForm = () => {
   const classes = useStyles();
   const classes2 = useStyles2();
   const classes3 = useStyles3();
-  const [quantity, setQuantity] = React.useState(0);
+  const [quantity, setQuantity] = React.useState(1);
 
   const handleQuantityChange = (event, newValue) => {
     setQuantity(newValue);
@@ -97,10 +97,10 @@ const DonationForm = () => {
   };
 
   const handleBlur = () => {
-    if (quantity < 0) {
-      setQuantity(0);
-    } else if (quantity > 100) {
-      setQuantity(100);
+    if (quantity < 1) {
+      setQuantity(1);
+    } else if (quantity > 10) {
+      setQuantity(10);
     }
   };
 
@@ -109,6 +109,8 @@ const DonationForm = () => {
   const [validation, setValidation] = useState({
     errors: {
       itemName: "",
+      category: "",
+      quantity: "",
       street: "",
       city: "",
       state: "",
@@ -129,19 +131,32 @@ const DonationForm = () => {
   const [category, setCategory] = React.useState("");
 
   const handleCategoryChange = (event) => {
-    setCategory(event.target.value);
+    let value = event.target.value;
+    setCategory(value);
+    let errors = validation.errors;
+    if (value.length < 1) {
+      validation.errors.category = "Category is required!";
+    }
+    setValidation((prevState) => ({
+      ...prevState,
+      errors: { ...errors },
+    }));
   };
 
   const imageChange = () => {
-    console.log("entered");
+    // console.log("entered");
     setFormValid(true);
     setImageValid(formState.isValid);
     if (
-      validation.errors.firstName.length > 1 ||
-      validation.errors.lastName.length > 1 ||
-      validation.errors.email.length > 1 ||
-      validation.errors.password.length > 1 ||
-      validation.errors.nameNGO.length > 1
+      validation.errors.itemName.length > 1 ||
+      validation.errors.category.length > 1 ||
+      validation.errors.quantity.length > 1 ||
+      validation.errors.street.length > 1 ||
+      validation.errors.state.length > 1 ||
+      validation.errors.pincode.length > 1 ||
+      validation.errors.house.length > 1 ||
+      validation.errors.landmark.length > 1 ||
+      validation.errors.city.length > 1
     ) {
       setFormValid(false);
     }
@@ -243,27 +258,29 @@ const DonationForm = () => {
 
     try {
       const formData = new FormData();
-      formData.append("email", validation.values.email);
-      formData.append("firstName", validation.values.firstName);
-      formData.append("lastName", validation.values.lastName);
-      formData.append("password", validation.values.password);
-      formData.append("nameNGO", validation.values.nameNGO);
-      formData.append("descriptionNGO", validation.values.descriptionNGO);
+      formData.append("itemName", validation.values.itemName);
+      formData.append("category", category);
+      formData.append("quantity", quantity);
+      formData.append("street", validation.values.street);
+      formData.append("landmark", validation.values.landmark);
+      formData.append("city", validation.values.city);
+      formData.append("state", validation.values.state);
+      formData.append("pincode", validation.values.pincode);
+      formData.append("house", validation.values.house);
       formData.append("date", selectedDate);
       formData.append("image", formState.inputs.image.value);
-      // formData.append("type", value);
 
-      // for (var pair of formData.entries()) {
-      //   console.log(pair[0] + ", " + pair[1]);
-      // }
+      for (var pair of formData.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
+      }
 
-      const responseData = await sendRequest(
-        "http://localhost:5000/api/users/signup",
-        "POST",
-        formData
-      );
+      // const responseData = await sendRequest(
+      //   "http://localhost:5000/api/users/signup",
+      //   "POST",
+      //   formData
+      // );
 
-      auth.login(responseData.userId, responseData.token);
+      // auth.login(responseData.userId, responseData.token);
     } catch (err) {
       console.log("error: " + err);
     }
@@ -323,18 +340,25 @@ const DonationForm = () => {
               flexDirection='row'
               justifyContent='space-around'
               m={1}>
-              <FormControl className={classes2.formControl}>
-                <InputLabel id='demo-simple-select-label'>Category</InputLabel>
+              <FormControl
+                className={classes2.formControl}
+                error={validation.errors.category.length > 0}>
+                <InputLabel id='demo-simple-select-error-label'>
+                  Category
+                </InputLabel>
                 <Select
-                  labelId='demo-simple-select-label'
-                  id='demo-simple-select'
+                  labelId='demo-simple-select-error-label'
+                  id='demo-simple-select-error'
                   value={category}
-                  onChange={handleCategoryChange}>
+                  onChange={handleCategoryChange}
+                  onBlur={handleCategoryChange}
+                  name='category'>
                   <MenuItem value={"clothes"}>Clothes</MenuItem>
                   <MenuItem value={"shoes"}>Shoes</MenuItem>
                   <MenuItem value={"books"}>Books</MenuItem>
                   <MenuItem value={"food"}>Food</MenuItem>
                 </Select>
+                <FormHelperText>{validation.errors.category}</FormHelperText>
               </FormControl>
             </Box>
             <Box
@@ -367,9 +391,9 @@ const DonationForm = () => {
                       onChange={handleInputChange}
                       onBlur={handleBlur}
                       inputProps={{
-                        step: 10,
-                        min: 0,
-                        max: 100,
+                        step: 1,
+                        min: 1,
+                        max: 10,
                         type: "number",
                         "aria-labelledby": "input-slider",
                       }}
@@ -378,11 +402,6 @@ const DonationForm = () => {
                 </Grid>
               </div>
             </Box>
-            <Box
-              display='flex'
-              flexDirection='row'
-              justifyContent='space-around'
-              m={1}></Box>
             <Box
               display='flex'
               flexDirection='row'
@@ -459,61 +478,77 @@ const DonationForm = () => {
             <Box
               display='flex'
               flexDirection='row'
-              justifyContent='space-around'
-              m={1}>
-              <TextField
-                error={validation.errors.city.length > 0}
-                id='city'
-                name='city'
-                type='text'
-                label='City'
-                helperText={validation.errors.city}
-                onBlur={handleFormChange}
-                onChange={handleFormChange}
-                style={{ width: "10rem" }}
-              />
-              <TextField
-                error={validation.errors.state.length > 0}
-                id='state'
-                name='state'
-                type='text'
-                label='State'
-                helperText={validation.errors.state}
-                onBlur={handleFormChange}
-                onChange={handleFormChange}
-                style={{ width: "10rem" }}
-              />
+              justifyContent='center'
+              m={1}
+              style={{ width: "100%" }}>
+              <Box
+                display='flex'
+                flexDirection='row'
+                justifyContent='space-around'
+                m={1}
+                style={{ width: "30rem" }}>
+                <TextField
+                  error={validation.errors.city.length > 0}
+                  id='city'
+                  name='city'
+                  type='text'
+                  label='City'
+                  helperText={validation.errors.city}
+                  onBlur={handleFormChange}
+                  onChange={handleFormChange}
+                  style={{ width: "10rem" }}
+                />
+                <TextField
+                  error={validation.errors.state.length > 0}
+                  id='state'
+                  name='state'
+                  type='text'
+                  label='State'
+                  helperText={validation.errors.state}
+                  onBlur={handleFormChange}
+                  onChange={handleFormChange}
+                  style={{ width: "10rem" }}
+                />
+              </Box>
             </Box>
             <Box
               display='flex'
               flexDirection='row'
-              justifyContent='space-around'
-              m={1}>
-              <TextField
-                error={validation.errors.pincode.length > 0}
-                id='pincode'
-                name='pincode'
-                type='text'
-                label='Pincode'
-                helperText={validation.errors.pincode}
-                onBlur={handleFormChange}
-                onChange={handleFormChange}
-                style={{ width: "10rem" }}
-              />
-
-              <TextField
-                error={validation.errors.house.length > 0}
-                id='house'
-                name='house'
-                type='text'
-                label='House No'
-                helperText={validation.errors.house}
-                onBlur={handleFormChange}
-                onChange={handleFormChange}
-                style={{ width: "5rem" }}
-              />
+              justifyContent='center'
+              m={1}
+              style={{ width: "100%" }}>
+              <Box
+                display='flex'
+                flexDirection='row'
+                justifyContent='space-between'
+                m={1}
+                style={{ width: "20rem" }}>
+                <TextField
+                  error={validation.errors.pincode.length > 0}
+                  id='pincode'
+                  name='pincode'
+                  type='text'
+                  label='Pincode'
+                  helperText={validation.errors.pincode}
+                  onBlur={handleFormChange}
+                  onChange={handleFormChange}
+                  style={{ width: "10rem" }}
+                />
+                <TextField
+                  error={validation.errors.house.length > 0}
+                  id='house'
+                  name='house'
+                  type='text'
+                  label='House No'
+                  helperText={validation.errors.house}
+                  onBlur={handleFormChange}
+                  onChange={handleFormChange}
+                  style={{ width: "5rem" }}
+                />
+              </Box>
             </Box>
-            <FormGroup row>
+
+            <FormGroup>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -526,15 +561,22 @@ const DonationForm = () => {
                 label='Save Address'
               />
             </FormGroup>
+            <Box
+              display='flex'
+              flexDirection='row'
+              justifyContent='center'
+              m={1}
+              style={{ width: "100%" }}>
+              <Button
+                variant='contained'
+                color='primary'
+                type='submit'
+                // disabled={!formValid}
+                style={{ width: "16rem" }}>
+                Submit
+              </Button>
+            </Box>
           </Box>
-
-          <Button
-            variant='contained'
-            color='primary'
-            type='submit'
-            disabled={!formValid}>
-            Submit
-          </Button>
         </form>
       </div>
     </React.Fragment>
