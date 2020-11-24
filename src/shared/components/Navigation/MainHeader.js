@@ -31,6 +31,13 @@ export default function MainHeader() {
           <Typography variant='h4' className={classes.title}>
             SAHYOG
           </Typography>
+          <Button
+            color='inherit'
+            onClick={() => {
+              console.log(auth);
+            }}>
+            click me
+          </Button>
           {!auth.isLoggedIn && <Button color='inherit'>Login</Button>}
           {auth.isLoggedIn && (
             <Button color='inherit' onClick={auth.logout}>

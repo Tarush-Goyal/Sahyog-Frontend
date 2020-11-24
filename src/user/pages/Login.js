@@ -49,8 +49,8 @@ const Login = () => {
           "Content-Type": "application/json",
         }
       );
-
-      auth.login(responseData.userId, responseData.token);
+      console.log(responseData);
+      auth.login(responseData.userId, responseData.token, responseData.type);
     } catch (err) {}
   };
 
