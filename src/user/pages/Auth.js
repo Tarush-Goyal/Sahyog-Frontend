@@ -203,7 +203,7 @@ const Auth = () => {
     switch (stepIndex) {
       case 0:
         return (
-          <div style={{ width: "100%" }} flexGrow={1}>
+          <div style={{ width: "100%" }}>
             <h4>Select your user type</h4>
             <FormControl component='fieldset'>
               <RadioGroup
@@ -435,16 +435,11 @@ const Auth = () => {
             </Step>
           ))}
         </Stepper>
-        <div style={{ width: "100%" }} flexGrow={1}>
+        <div style={{ width: "100%" }}>
           {activeStep === steps.length ? (
-            <div>
-              <Typography className={classes.instructions}>
-                All steps completed
-              </Typography>
-              <Button onClick={handleReset}>Reset</Button>
-            </div>
+            <div></div>
           ) : (
-            <div style={{ width: "100%" }} flexGrow={1}>
+            <div style={{ width: "100%" }}>
               <Typography className={classes.instructions}>
                 {getStepContent(activeStep)}
               </Typography>

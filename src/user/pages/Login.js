@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "../../shared/components/UIElements/Card";
 import TextField from "@material-ui/core/TextField";
 import "./Login.css";
 import Box from "@material-ui/core/Box";

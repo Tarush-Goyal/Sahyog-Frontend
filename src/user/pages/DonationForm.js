@@ -269,6 +269,7 @@ const DonationForm = () => {
       formData.append("house", validation.values.house);
       formData.append("date", selectedDate);
       formData.append("image", formState.inputs.image.value);
+      formdata.append("id", auth.userId);
 
       for (var pair of formData.entries()) {
         console.log(pair[0] + ": " + pair[1]);

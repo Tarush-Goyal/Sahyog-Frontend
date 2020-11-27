@@ -22,41 +22,54 @@ const App = () => {
 
   let routes;
 
-  if (token) {
+  if (token && type === "homeowner") {
     routes = (
       <Switch>
-        <Route path='/' exact>
+        <Route path='/donations' exact>
+          <Donations></Donations>
+        </Route>
+        <Route path='/leaderboard' exact>
+          <h1>leaderboard</h1>
+        </Route>
+
+        <Route path='/users' exact>
           <Users />
         </Route>
-        <Route path='/:userId/places' exact>
-          <UserPlaces />
-        </Route>
-        <Route path='/places/new' exact>
-          <NewPlace />
-        </Route>
-        <Route path='/places/:placeId'>
-          <UpdatePlace />
-        </Route>
-        <Redirect to='/' />
+
+        <Redirect to='/users' />
       </Switch>
     );
-  } else {
+  } else if (token && type === "head") {
     routes = (
       <Switch>
-        <Route path='/' exact>
-          {/* <Users /> */}
-          {/* <Auth /> */}
+        <Route path='/inventory' exact>
+          <h1>inventory</h1>
+        </Route>
+        <Route path='/volunteers' exact>
+          <h1>volunteers</h1>
+        </Route>
+        <Redirect to='/inventory' />
+      </Switch>
+    );
+  }
+
+  if (token && type === "volunteer") {
+    routes = (
+      <Switch>
+        <Route path='/requests' exact>
+          <h1>Active Requests</h1>
+        </Route>
+        <Route path='/leaderboard' exact>
+          <h1>leaderboard</h1>
+        </Route>
+        <Redirect to='/requests' />
+      </Switch>
+    );
+  } else if (!token) {
+    routes = (
+      <Switch>
+        <Route path='/auth' exact>
           <SimpleTabs></SimpleTabs>
-        </Route>
-        <Route path='/:userId/places' exact>
-          <UserPlaces />
-        </Route>
-        <Route path='/auth'>
-          {/* <Auth /> */}
-          <SimpleTabs></SimpleTabs>
-        </Route>
-        <Route path='/donations'>
-          <Donations></Donations>
         </Route>
         <Redirect to='/auth' />
       </Switch>

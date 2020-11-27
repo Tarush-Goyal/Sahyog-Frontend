@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import { BrowserRouter, Link, withRouter, useHistory } from "react-router-dom";
+
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -6,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import { AuthContext } from "../../context/auth-context";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,9 +23,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MainHeader() {
+const MainHeader = () => {
+  let history = useHistory();
   const classes = useStyles();
   const auth = useContext(AuthContext);
+  const myFunc = () => {
+    console.log(auth);
+  };
+
+  const navigateTo = (path) => {
+    history.push(path);
+  };
 
   return (
     <div className={classes.root}>
@@ -31,13 +42,60 @@ export default function MainHeader() {
           <Typography variant='h4' className={classes.title}>
             SAHYOG
           </Typography>
-          <Button
-            color='inherit'
-            onClick={() => {
-              console.log(auth);
-            }}>
-            click me
-          </Button>
+          {auth.type === "homeowner" && (
+            <Box>
+              <Button
+                color='inherit'
+                onClick={() => {
+                  navigateTo("/donations");
+                }}>
+                Donate
+              </Button>
+              <Button
+                color='inherit'
+                onClick={() => {
+                  navigateTo("/leaderboard");
+                }}>
+                Leaderboard
+              </Button>
+            </Box>
+          )}
+          {auth.type === "head" && (
+            <Box>
+              <Button
+                color='inherit'
+                onClick={() => {
+                  navigateTo("/inventory");
+                }}>
+                Inventory
+              </Button>
+              <Button
+                color='inherit'
+                onClick={() => {
+                  navigateTo("/volunteers");
+                }}>
+                Volunteers
+              </Button>
+            </Box>
+          )}
+          {auth.type === "volunteer" && (
+            <Box>
+              <Button
+                color='inherit'
+                onClick={() => {
+                  navigateTo("/requests");
+                }}>
+                Active Requests
+              </Button>
+              <Button
+                color='inherit'
+                onClick={() => {
+                  navigateTo("/leaderboard");
+                }}>
+                Leaderboard
+              </Button>
+            </Box>
+          )}
           {!auth.isLoggedIn && <Button color='inherit'>Login</Button>}
           {auth.isLoggedIn && (
             <Button color='inherit' onClick={auth.logout}>
@@ -48,4 +106,6 @@ export default function MainHeader() {
       </AppBar>
     </div>
   );
-}
+};
+
+export default MainHeader;
