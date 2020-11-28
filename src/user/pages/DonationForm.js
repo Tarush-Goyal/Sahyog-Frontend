@@ -254,26 +254,41 @@ const DonationForm = () => {
   );
 
   const authSubmitHandler = async (event) => {
+    let id = "";
     event.preventDefault();
+    // if (auth.isLoggedIn) {
 
     try {
-      const formData = new FormData();
-      formData.append("itemName", validation.values.itemName);
-      formData.append("category", category);
-      formData.append("quantity", quantity);
-      formData.append("street", validation.values.street);
-      formData.append("landmark", validation.values.landmark);
-      formData.append("city", validation.values.city);
-      formData.append("state", validation.values.state);
-      formData.append("pincode", validation.values.pincode);
-      formData.append("house", validation.values.house);
-      formData.append("date", selectedDate);
-      formData.append("image", formState.inputs.image.value);
-      formdata.append("id", auth.userId);
+      const donationForm = JSON.stringify({
+        itemName: validation.values.itemName,
+        category: category,
+        quantity: quantity,
+        street: validation.values.street,
+        landmark: validation.values.landmark,
+        city: validation.values.city,
+        state: validation.values.state,
+        pincode: validation.values.pincode,
+        house: validation.values.house,
+        date: selectedDate,
+        image: formState.inputs.image.value,
+        userId: auth.userId,
+      });
 
-      for (var pair of formData.entries()) {
-        console.log(pair[0] + ": " + pair[1]);
-      }
+      console.log(donationForm);
+      console.log("donations");
+      // const formData = new FormData();
+      // formData.append("itemName", validation.values.itemName);
+      // formData.append("category", category);
+      // formData.append("quantity", quantity);
+      // formData.append("street", validation.values.street);
+      // formData.append("landmark", validation.values.landmark);
+      // formData.append("city", validation.values.city);
+      // formData.append("state", validation.values.state);
+      // formData.append("pincode", validation.values.pincode);
+      // formData.append("house", validation.values.house);
+      // formData.append("date", selectedDate);
+      // formData.append("image", formState.inputs.image.value);
+      // formdata.append("userId", id);
 
       // const responseData = await sendRequest(
       //   "http://localhost:5000/api/users/signup",
@@ -285,6 +300,7 @@ const DonationForm = () => {
     } catch (err) {
       console.log("error: " + err);
     }
+    // }
   };
 
   return (
@@ -300,7 +316,12 @@ const DonationForm = () => {
             flexDirection='row'
             justifyContent='center'
             style={{ width: "100%" }}>
-            <h2>Donation Form</h2>
+            <h2
+              onClick={() => {
+                console.log(auth.userId);
+              }}>
+              Donation Form
+            </h2>
           </Box>
           <Box display='flex' flexDirection='row' justifyContent='center'>
             <hr style={{ width: "80%" }}></hr>
@@ -475,6 +496,7 @@ const DonationForm = () => {
                 onChange={handleFormChange}
                 style={{ width: "30rem" }}
               />
+              {/* <input type='text'></input> */}
             </Box>
             <Box
               display='flex'
