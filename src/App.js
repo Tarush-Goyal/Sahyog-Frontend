@@ -6,6 +6,7 @@ import {
   Switch,
 } from "react-router-dom";
 
+import DonationsTable from "./volunteer/components/DonationsTable";
 import Donations from "./user/pages/Donations";
 import Users from "./user/pages/Users";
 import NewPlace from "./places/pages/NewPlace";
@@ -58,6 +59,7 @@ const App = () => {
       <Switch>
         <Route path='/requests' exact>
           <h1>Active Requests</h1>
+          <DonationsTable></DonationsTable>
         </Route>
         <Route path='/leaderboard' exact>
           <h1>leaderboard</h1>
