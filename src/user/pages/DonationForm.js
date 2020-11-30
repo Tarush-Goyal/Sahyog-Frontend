@@ -11,6 +11,7 @@ import ImageUpload from "../../shared/components/FormElements/ImageUpload";
 import { useForm } from "../../shared/hooks/form-hook";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 import { AuthContext } from "../../shared/context/auth-context";
+
 import "./Auth.css";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -250,52 +251,36 @@ const DonationForm = () => {
   );
 
   const validEmailRegex = RegExp(
-    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/
   );
 
   const authSubmitHandler = async (event) => {
     let id = "";
     event.preventDefault();
     // if (auth.isLoggedIn) {
-
     try {
-      const donationForm = JSON.stringify({
-        itemName: validation.values.itemName,
-        category: category,
-        quantity: quantity,
-        street: validation.values.street,
-        landmark: validation.values.landmark,
-        city: validation.values.city,
-        state: validation.values.state,
-        pincode: validation.values.pincode,
-        house: validation.values.house,
-        date: selectedDate,
-        image: formState.inputs.image.value,
-        userId: auth.userId,
-      });
-
-      console.log(donationForm);
-      console.log("donations");
-      // const formData = new FormData();
-      // formData.append("itemName", validation.values.itemName);
-      // formData.append("category", category);
-      // formData.append("quantity", quantity);
-      // formData.append("street", validation.values.street);
-      // formData.append("landmark", validation.values.landmark);
-      // formData.append("city", validation.values.city);
-      // formData.append("state", validation.values.state);
-      // formData.append("pincode", validation.values.pincode);
-      // formData.append("house", validation.values.house);
-      // formData.append("date", selectedDate);
-      // formData.append("image", formState.inputs.image.value);
-      // formdata.append("userId", id);
-
-      // const responseData = await sendRequest(
-      //   "http://localhost:5000/api/users/signup",
-      //   "POST",
-      //   formData
-      // );
-
+      const formData = new FormData();
+      formData.append("itemName", validation.values.itemName);
+      formData.append("category", category);
+      formData.append("quantity", quantity);
+      formData.append("street", validation.values.street);
+      formData.append("landmark", validation.values.landmark);
+      formData.append("city", validation.values.city);
+      formData.append("state", validation.values.state);
+      formData.append("pincode", validation.values.pincode);
+      formData.append("house", validation.values.house);
+      formData.append("date", selectedDate);
+      formData.append("image", formState.inputs.image.value);
+      console.log(formData);
+      const responseData = await sendRequest(
+        "http://localhost:5000/api/donate",
+        "POST",
+        formData,
+        {
+          Authorization: "Bearer " + auth.token,
+        }
+      );
+      console.log("Success");
       // auth.login(responseData.userId, responseData.token);
     } catch (err) {
       console.log("error: " + err);
