@@ -56,8 +56,9 @@ const DonationsTable = () => {
   const handleClose = (status) => {
     setOpen(false);
     if (status == true) {
-      authSubmitHandler();
-      history.push("/leaderboard");
+      console.log(requests[currentIndex]);
+      // authSubmitHandler();
+      // history.push("/leaderboard");
     }
   };
 
@@ -67,7 +68,11 @@ const DonationsTable = () => {
         const responseData = await sendRequest(
           "http://localhost:5000/api/users/activeDonationRequest"
         );
+        console.log("response");
+        console.log(responseData);
         let result = responseData.map((data) => ({
+          _id: data._id,
+          userId: data.userId,
           itemName: data.itemName,
           category: data.category,
           quantity: data.quantity,
@@ -155,6 +160,7 @@ const DonationsTable = () => {
             <TableBody>
               {requests.map((request, index) => (
                 <TableRow
+                  style={{ cursor: "pointer" }}
                   key={index}
                   onClick={() => {
                     handleClickOpen(index);
