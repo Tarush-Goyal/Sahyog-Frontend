@@ -18,6 +18,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
+import { useAuth } from "../../shared/hooks/auth-hook";
 
 const useStyles = makeStyles({
   table: {
@@ -33,6 +34,7 @@ const DonationsTable = () => {
   const [requests, setActiveRequests] = useState([]);
   const [currentIndex, setIndex] = useState(0);
   const [dialogName, setDialogName] = useState("");
+  const { token, login, logout, userId, type } = useAuth();
 
   const handleClickOpen = (index) => {
     setOpen(true);
@@ -41,11 +43,16 @@ const DonationsTable = () => {
   };
 
   const authSubmitHandler = async (event) => {
+    let data = {
+      ...requests[currentIndex],
+    };
+    data.volunteerId = userId;
+    // console.log(data);
     try {
       const responseData = await sendRequest(
         "http://localhost:5000/api/users/activereq",
         "POST",
-        JSON.stringify(requests[currentIndex]),
+        JSON.stringify(data),
         {
           "Content-Type": "application/json",
         }
@@ -56,7 +63,7 @@ const DonationsTable = () => {
   const handleClose = (status) => {
     setOpen(false);
     if (status == true) {
-      console.log(requests[currentIndex]);
+      // console.log(requests[currentIndex]);
       authSubmitHandler();
       history.push("/leaderboard");
     }

@@ -11,8 +11,9 @@ import Typography from "@material-ui/core/Typography";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    maxWidth: "36ch",
-    backgroundColor: theme.palette.background.paper,
+    maxWidth: "50rem",
+    // margin: theme.spacing(1),
+    backgroundColor: "#ff8a80",
   },
   inline: {
     display: "inline",

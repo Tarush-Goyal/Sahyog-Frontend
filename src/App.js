@@ -17,6 +17,7 @@ import SimpleTabs from "./shared/components/material-ui/SimpleTabs";
 import MainNavigation from "./shared/components/Navigation/MainNavigation";
 import { AuthContext } from "./shared/context/auth-context";
 import { useAuth } from "./shared/hooks/auth-hook";
+import Leaderboard from "./user/pages/Leaderboard";
 
 const App = () => {
   const { token, login, logout, userId, type } = useAuth();
@@ -30,7 +31,8 @@ const App = () => {
           <Donations></Donations>
         </Route>
         <Route path='/leaderboard' exact>
-          <h1>leaderboard</h1>
+          {/* <h1>leaderboard</h1> */}
+          <Leaderboard></Leaderboard>
         </Route>
 
         <Route path='/users' exact>
