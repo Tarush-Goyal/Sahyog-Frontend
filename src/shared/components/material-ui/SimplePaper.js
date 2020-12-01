@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SimplePaper = () => {
+const SimplePaper = (props) => {
   const classes = useStyles();
 
   return (
@@ -27,7 +27,7 @@ const SimplePaper = () => {
           flexDirection='row'
           justifyContent='center'>
           <h1>
-            <u>Active Donation Requests</u>
+            <u>{props.title}</u>
           </h1>
         </Box>
       </Paper>

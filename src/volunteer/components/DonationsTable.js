@@ -7,7 +7,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import SimplePaper from "../../shared/components/material-ui/Paper";
+import SimplePaper from "../../shared/components/material-ui/SimplePaper";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import { useHttpClient } from "../../shared/hooks/http-hook";
@@ -57,8 +57,8 @@ const DonationsTable = () => {
     setOpen(false);
     if (status == true) {
       console.log(requests[currentIndex]);
-      // authSubmitHandler();
-      // history.push("/leaderboard");
+      authSubmitHandler();
+      history.push("/leaderboard");
     }
   };
 
@@ -68,8 +68,6 @@ const DonationsTable = () => {
         const responseData = await sendRequest(
           "http://localhost:5000/api/users/activeDonationRequest"
         );
-        console.log("response");
-        console.log(responseData);
         let result = responseData.map((data) => ({
           _id: data._id,
           userId: data.userId,
@@ -131,7 +129,7 @@ const DonationsTable = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <SimplePaper></SimplePaper>
+      <SimplePaper title='Active Donation Requests'></SimplePaper>
       <TableContainer component={Paper}>
         {/* <button
           onClick={() => {
