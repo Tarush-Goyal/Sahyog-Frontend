@@ -11,7 +11,7 @@ import ImageUpload from "../../shared/components/FormElements/ImageUpload";
 import { useForm } from "../../shared/hooks/form-hook";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 import { AuthContext } from "../../shared/context/auth-context";
-
+import { useHistory } from "react-router-dom";
 import "./Auth.css";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -23,7 +23,6 @@ import Typography from "@material-ui/core/Typography";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-// import FormControl from "@material-ui/core/FormControl";
 import Box from "@material-ui/core/Box";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -31,7 +30,6 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Grid from "@material-ui/core/Grid";
-// import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
 import VolumeUp from "@material-ui/icons/VolumeUp";
@@ -41,7 +39,6 @@ import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import FormGroup from "@material-ui/core/FormGroup";
-// import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,6 +72,7 @@ const useStyles3 = makeStyles({
 });
 
 const DonationForm = () => {
+  let history = useHistory();
   const [state, setState] = React.useState({
     checkedA: true,
     checkedB: true,
@@ -227,9 +225,7 @@ const DonationForm = () => {
 
   const auth = useContext(AuthContext);
   let [user1, setUser] = useState("homeowner");
-  const [selectedDate, setSelectedDate] = React.useState(
-    new Date("2014-08-18T21:11:54")
-  );
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const handleDateChange = (date) => {
@@ -281,6 +277,7 @@ const DonationForm = () => {
         }
       );
       console.log("Success");
+      history.push("/");
       // auth.login(responseData.userId, responseData.token);
     } catch (err) {
       console.log("error: " + err);
@@ -364,6 +361,7 @@ const DonationForm = () => {
                   <MenuItem value={"shoes"}>Shoes</MenuItem>
                   <MenuItem value={"books"}>Books</MenuItem>
                   <MenuItem value={"food"}>Food</MenuItem>
+                  <MenuItem value={"stationary"}>Stationary</MenuItem>
                 </Select>
                 <FormHelperText>{validation.errors.category}</FormHelperText>
               </FormControl>

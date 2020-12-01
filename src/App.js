@@ -58,7 +58,6 @@ const App = () => {
     routes = (
       <Switch>
         <Route path='/requests' exact>
-          <h1>Active Requests</h1>
           <DonationsTable></DonationsTable>
         </Route>
         <Route path='/leaderboard' exact>

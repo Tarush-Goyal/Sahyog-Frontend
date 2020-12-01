@@ -406,11 +406,7 @@ const Auth = () => {
         formData
       );
 
-      auth.login(
-        responseData.userId,
-        responseData.token
-        // ,responseData.type
-      );
+      auth.login(responseData.userId, responseData.token, responseData.type);
     } catch (err) {
       console.log("error: " + err);
     }
@@ -419,11 +415,7 @@ const Auth = () => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      {/* <Card className="authentication"> */}
       {isLoading && <LoadingSpinner asOverlay />}
-      {/* <h2>Login Required</h2> */}
-      {/* <hr /> */}
-
       <div className={classes.root}>
         <Stepper
           activeStep={activeStep}
