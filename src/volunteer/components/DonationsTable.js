@@ -37,14 +37,26 @@ const DonationsTable = () => {
   const handleClickOpen = (index) => {
     setOpen(true);
     setIndex(index);
-    // console.log(requests);
     setDialogName(requests[index].itemName);
+  };
+
+  const authSubmitHandler = async (event) => {
+    try {
+      const responseData = await sendRequest(
+        "http://localhost:5000/api/users/activereq",
+        "POST",
+        JSON.stringify(requests[currentIndex]),
+        {
+          "Content-Type": "application/json",
+        }
+      );
+    } catch (err) {}
   };
 
   const handleClose = (status) => {
     setOpen(false);
     if (status == true) {
-      // post req and send index
+      authSubmitHandler();
       history.push("/leaderboard");
     }
   };
@@ -81,6 +93,8 @@ const DonationsTable = () => {
 
   return (
     <>
+      <ErrorModal error={error} onClear={clearError} />
+
       <Dialog
         open={open}
         onClose={handleClose}
@@ -114,45 +128,51 @@ const DonationsTable = () => {
       </Dialog>
       <SimplePaper></SimplePaper>
       <TableContainer component={Paper}>
-        <button
+        {/* <button
           onClick={() => {
             console.log(requests);
           }}>
           efrv
-        </button>
-        <Table className={classes.table} aria-label='simple table'>
-          <TableHead>
-            <TableRow>
-              <TableCell>Item Name</TableCell>
-              <TableCell align='right'>Category</TableCell>
-              <TableCell align='right'>Quantity</TableCell>
-              <TableCell align='right'>Pickup Date</TableCell>
-              <TableCell style={{ width: "30%" }} align='right'>
-                Address
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {requests.map((request, index) => (
-              <TableRow
-                key={index}
-                onClick={() => {
-                  handleClickOpen(index);
-                }}>
-                {/* <Link to='/' exact> */}
-                <TableCell component='th' scope='row'>
-                  {request.itemName}
-                  {/* 16 */}
+        </button> */}
+        {isLoading && (
+          <div className='center'>
+            <LoadingSpinner />
+          </div>
+        )}
+        {!isLoading && requests && (
+          <Table className={classes.table} aria-label='simple table'>
+            <TableHead>
+              <TableRow>
+                <TableCell>Item Name</TableCell>
+                <TableCell align='right'>Category</TableCell>
+                <TableCell align='right'>Quantity</TableCell>
+                <TableCell align='right'>Pickup Date</TableCell>
+                <TableCell style={{ width: "30%" }} align='right'>
+                  Address
                 </TableCell>
-                <TableCell align='right'>{request.category}</TableCell>
-                <TableCell align='right'>{request.quantity}</TableCell>
-                <TableCell align='right'>{request.date.slice(0, 16)}</TableCell>
-                <TableCell align='right'>{request.address}</TableCell>
-                {/* </Link> */}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {requests.map((request, index) => (
+                <TableRow
+                  key={index}
+                  onClick={() => {
+                    handleClickOpen(index);
+                  }}>
+                  <TableCell component='th' scope='row'>
+                    {request.itemName}
+                  </TableCell>
+                  <TableCell align='right'>{request.category}</TableCell>
+                  <TableCell align='right'>{request.quantity}</TableCell>
+                  <TableCell align='right'>
+                    {request.date.slice(0, 16)}
+                  </TableCell>
+                  <TableCell align='right'>{request.address}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </TableContainer>
     </>
   );
