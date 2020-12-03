@@ -58,7 +58,7 @@ const MainHeader = () => {
               <Button
                 color='inherit'
                 onClick={() => {
-                  navigateTo("/status");
+                  navigateTo(`/status/${auth.userId}`);
                 }}>
                 Status of Donations
               </Button>

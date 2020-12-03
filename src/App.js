@@ -41,7 +41,7 @@ const App = () => {
           <Users />
         </Route>
 
-        <Route path='/status' exact>
+        <Route path='/status/:id' exact>
           <Status></Status>
         </Route>
 

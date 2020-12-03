@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -17,14 +17,21 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
-import { useHistory } from "react-router-dom";
+
 import { useAuth } from "../../shared/hooks/auth-hook";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-// import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import { useParams, useHistory } from "react-router-dom";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import Collapse from "@material-ui/core/Collapse";
+import { useReactToPrint } from "react-to-print";
+
+import VolunteerID from "../components/VolunteerID";
 
 const useStyles = makeStyles({
   table: {
@@ -32,55 +39,74 @@ const useStyles = makeStyles({
   },
 });
 
-// let donation = [
-//   {
-//     itemName: "dewfrt",
-//     category: "efwrgt",
-//     quantity: 5,
-//     date: "dwefrdf",
-//     status: "active",
-//     assignedVolunteer: "Ramesh",
-//   },
-//   {
-//     itemName: "dewfrt",
-//     category: "efwrgt",
-//     quantity: 5,
-//     date: "dwefrdf",
-//     status: "pending",
-//     assignedVolunteer: "Ramesh",
-//   },
-//   {
-//     itemName: "dewfrt",
-//     category: "efwrgt",
-//     quantity: 5,
-//     date: "dwefrdf",
-//     status: "completed",
-//     assignedVolunteer: "Ramesh",
-//   },
-// ];
-
 const Status = () => {
+  const { token, login, logout, userId, type } = useAuth();
+  const [open, setOpen] = React.useState();
+  const [volunteerInfo, setVolunteerInfo] = React.useState();
+
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const [value, setValue] = useState(false);
+  const id = useParams().id;
   const [donations, setDonations] = useState([]);
   const classes = useStyles();
-  const { token, login, logout, userId, type } = useAuth();
+
+  const handleOpening = (index) => {
+    // 1. Make a shallow copy of the items
+    let items = [...donations];
+    // 2. Make a shallow copy of the item you want to mutate
+    let item = { ...items[index] };
+    // 3. Replace the property you're intested in
+    item.open = !item.open;
+    // 4. Put it back into our array. N.B. we *are* mutating the array here, but that's why we made a copy first
+    items[index] = item;
+    // 5. Set the state to our new copy
+    setDonations(items);
+    setValue(false);
+  };
+
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+  const generateID = (index) => {
+    const fetchVolunteer = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/users/volunteerId/${donations[index].assignedVolunteer}`
+        );
+        console.log(responseData);
+        setVolunteerInfo(responseData);
+        setValue(true);
+        handlePrint();
+        // setValue(return(<h1>grgr</h1>));
+      } catch (err) {}
+    };
+    fetchVolunteer();
+
+    // if (volunteerInfo) {
+
+    // }
+    console.log(value);
+  };
 
   useEffect(() => {
     const fetchDonations = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/donate/itemsDonatedByUserId/${userId}`
+          `http://localhost:5000/api/users/itemsDonatedByUserId/${id}`
         );
-
-        setDonations(responseData);
+        // console.log(responseData.items);
+        let results = responseData.items;
+        results.map((result) => {
+          result.open = false;
+        });
+        console.log(results);
+        setDonations(results);
       } catch (err) {}
     };
     fetchDonations();
   }, [sendRequest]);
-
-  useEffect(() => {
-    setDonations(donation);
-  });
 
   return (
     <>
@@ -93,58 +119,111 @@ const Status = () => {
               <TableContainer
                 component={Paper}
                 style={{ width: "68rem", margin: "2rem" }}>
-                {isLoading && (
-                  <div className='center'>
-                    <LoadingSpinner />
-                  </div>
-                )}
-                {!isLoading && donations && (
-                  <Table className={classes.table} aria-label='simple table'>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Item Name</TableCell>
-                        <TableCell align='center'>Category</TableCell>
-                        <TableCell align='center'>Quantity</TableCell>
-                        <TableCell align='center'>Pickup Date</TableCell>
-                        <TableCell align='center'>Status</TableCell>
-                        <TableCell align='center'>Assigned Volunteer</TableCell>
-                      </TableRow>
-                    </TableHead>
+                <Table className={classes.table} aria-label='simple table'>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell style={{ visibility: "hidden" }}>
+                        <IconButton aria-label='expand row' size='small' />
+                      </TableCell>
+                      <TableCell>Item Name</TableCell>
+                      <TableCell align='center'>Category</TableCell>
+                      <TableCell align='center'>Quantity</TableCell>
+                      <TableCell align='center'>Pickup Date</TableCell>
+                      <TableCell align='center'>Status</TableCell>
+                      <TableCell align='center'>Assigned Volunteer</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  {isLoading && (
+                    <div className='center'>
+                      <LoadingSpinner />
+                    </div>
+                  )}
+                  {!isLoading && donations && (
                     <TableBody>
                       {donations.map((request, index) => (
-                        <TableRow key={index}>
-                          <TableCell component='th' scope='row'>
-                            {request.itemName}
-                          </TableCell>
-                          <TableCell align='center'>
-                            {request.category}
-                          </TableCell>
-                          <TableCell align='center'>
-                            {request.quantity}
-                          </TableCell>
-                          <TableCell align='center'>
-                            {request.date.slice(0, 16)}
-                          </TableCell>
-                          <TableCell
-                            align='center'
-                            style={{
-                              color:
-                                request.status == "active"
-                                  ? "red"
-                                  : request.status == "pending"
-                                  ? "blue"
-                                  : "green",
-                            }}>
-                            {request.status}
-                          </TableCell>
-                          <TableCell align='center'>
-                            {request.volunteer}
-                          </TableCell>
-                        </TableRow>
+                        <>
+                          <TableRow key={index}>
+                            <TableCell
+                              style={{
+                                visibility:
+                                  request.status == "pending"
+                                    ? "visible"
+                                    : "hidden",
+                              }}>
+                              <IconButton
+                                aria-label='expand row'
+                                size='small'
+                                onClick={() => {
+                                  handleOpening(index);
+                                }}>
+                                {open ? (
+                                  <KeyboardArrowUpIcon />
+                                ) : (
+                                  <KeyboardArrowDownIcon />
+                                )}
+                              </IconButton>
+                            </TableCell>
+                            <TableCell component='th' scope='row'>
+                              {request.itemName}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {request.category}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {request.quantity}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {request.date.slice(0, 16)}
+                            </TableCell>
+                            <TableCell
+                              align='center'
+                              style={{
+                                color:
+                                  request.status == "active"
+                                    ? "red"
+                                    : request.status == "pending"
+                                    ? "blue"
+                                    : "green",
+                              }}>
+                              {request.status}
+                            </TableCell>
+                            <TableCell align='center'>
+                              {request.assignedVolunteer == null ? "No" : "Yes"}
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell
+                              style={{ paddingBottom: 0, paddingTop: 0 }}
+                              colSpan={7}>
+                              <Collapse
+                                in={request.open}
+                                timeout='auto'
+                                unmountOnExit>
+                                {volunteerInfo && (
+                                  <div style={{ display: "none" }}>
+                                    <VolunteerID
+                                      data={volunteerInfo}
+                                      ref={componentRef}
+                                    />
+                                  </div>
+                                )}
+                                <Button
+                                  onClick={() => {
+                                    generateID(index);
+                                  }}
+                                  variant='outlined'
+                                  color='primary'
+                                  style={{ width: "20rem" }}>
+                                  Generate Volunteer ID Card
+                                </Button>
+                              </Collapse>
+                            </TableCell>
+                          </TableRow>
+                        </>
                       ))}
                     </TableBody>
-                  </Table>
-                )}
+                  )}
+                </Table>
               </TableContainer>
             </CardContent>
           </Card>

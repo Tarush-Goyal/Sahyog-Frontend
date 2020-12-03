@@ -75,7 +75,7 @@ const DonationsTable = () => {
         const responseData = await sendRequest(
           "http://localhost:5000/api/users/activeDonationRequest"
         );
-        let result = responseData.map((data) => ({
+        let result = responseData.items.map((data) => ({
           _id: data._id,
           userId: data.userId,
           itemName: data.itemName,
@@ -95,6 +95,7 @@ const DonationsTable = () => {
             " " +
             data.address.state,
         }));
+        // console.log(responseData.items);
         setActiveRequests(result);
       } catch (err) {}
     };
