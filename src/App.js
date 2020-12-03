@@ -18,6 +18,8 @@ import MainNavigation from "./shared/components/Navigation/MainNavigation";
 import { AuthContext } from "./shared/context/auth-context";
 import { useAuth } from "./shared/hooks/auth-hook";
 import Leaderboard from "./user/pages/Leaderboard";
+import Inventory from "./ngoHead/pages/Inventory";
+import Status from "./user/pages/Status";
 
 const App = () => {
   const { token, login, logout, userId, type } = useAuth();
@@ -39,6 +41,10 @@ const App = () => {
           <Users />
         </Route>
 
+        <Route path='/status' exact>
+          <Status></Status>
+        </Route>
+
         <Redirect to='/users' />
       </Switch>
     );
@@ -46,7 +52,8 @@ const App = () => {
     routes = (
       <Switch>
         <Route path='/inventory' exact>
-          <h1>inventory</h1>
+          {/* <h1>inventory</h1> */}
+          <Inventory></Inventory>
         </Route>
         <Route path='/volunteers' exact>
           <h1>volunteers</h1>

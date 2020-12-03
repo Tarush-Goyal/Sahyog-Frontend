@@ -20,75 +20,59 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SimpleList = () => {
+const SimpleList = (props) => {
   const classes = useStyles();
-
-  return (
-    <List className={classes.root}>
-      <ListItem alignItems='flex-start'>
-        <ListItemAvatar>
-          <Avatar alt='Remy Sharp' src='/static/images/avatar/1.jpg' />
-        </ListItemAvatar>
-        <ListItemText
-          primary='Brunch this weekend?'
-          secondary={
-            <React.Fragment>
-              <Typography
-                component='span'
-                variant='body2'
-                className={classes.inline}
-                color='textPrimary'>
-                Ali Connors
-              </Typography>
-              {" — I'll be in your neighborhood doing errands this…"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <Divider variant='inset' component='li' />
-      <ListItem alignItems='flex-start'>
-        <ListItemAvatar>
-          <Avatar alt='Travis Howard' src='/static/images/avatar/2.jpg' />
-        </ListItemAvatar>
-        <ListItemText
-          primary='Summer BBQ'
-          secondary={
-            <React.Fragment>
-              <Typography
-                component='span'
-                variant='body2'
-                className={classes.inline}
-                color='textPrimary'>
-                to Scott, Alex, Jennifer
-              </Typography>
-              {" — Wish I could come, but I'm out of town this…"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-      <Divider variant='inset' component='li' />
-      <ListItem alignItems='flex-start'>
-        <ListItemAvatar>
-          <Avatar alt='Cindy Baker' src='/static/images/avatar/3.jpg' />
-        </ListItemAvatar>
-        <ListItemText
-          primary='Oui Oui'
-          secondary={
-            <React.Fragment>
-              <Typography
-                component='span'
-                variant='body2'
-                className={classes.inline}
-                color='textPrimary'>
-                Sandra Adams
-              </Typography>
-              {" — Do you have Paris recommendations? Have you ever…"}
-            </React.Fragment>
-          }
-        />
-      </ListItem>
-    </List>
-  );
+  if (props.items.length === 0) {
+    return (
+      <div className='center'>
+        {/* <Card> */}
+        <h2>No users found.</h2>
+        {/* </Card> */}
+      </div>
+    );
+  } else {
+    // <UserItem
+    //   key={user.id}
+    //   id={user.id}
+    //   image={user.image}
+    //   name={user.name}
+    //   itemCount={user.items.length}
+    // />;
+    return (
+      <List className={classes.root}>
+        {props.items.map((user) => (
+          <>
+            <ListItem alignItems='flex-start' key={user.id}>
+              <ListItemAvatar>
+                {/* image={`http://localhost:5000/${props.image}`} */}
+                <Avatar
+                  alt='Remy Sharp'
+                  src={"http://localhost:5000/" + user.image}
+                />
+              </ListItemAvatar>
+              <ListItemText
+                primary={user.name}
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      component='span'
+                      variant='body2'
+                      className={classes.inline}
+                      color='textPrimary'>
+                      {user.items.length + " "}
+                      {user.itemCount === 1 ? "Donation" : "Donations"}
+                    </Typography>
+                    {/* {" — I'll be in your neighborhood doing errands this…"} */}
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <Divider variant='inset' component='li' />
+          </>
+        ))}
+      </List>
+    );
+  }
 };
 
 export default SimpleList;

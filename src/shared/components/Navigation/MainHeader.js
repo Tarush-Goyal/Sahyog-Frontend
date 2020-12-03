@@ -54,6 +54,14 @@ const MainHeader = () => {
                 }}>
                 Leaderboard
               </Button>
+
+              <Button
+                color='inherit'
+                onClick={() => {
+                  navigateTo("/status");
+                }}>
+                Status of Donations
+              </Button>
             </Box>
           )}
           {auth.type === "head" && (

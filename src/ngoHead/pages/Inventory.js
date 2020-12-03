@@ -3,43 +3,39 @@ import { useHttpClient } from "../../shared/hooks/http-hook";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import makeStyles from "@material-ui/core/styles";
-import SimpleList from "../../shared/components/material-ui/SimpleList";
 import SimplePaper from "../../shared/components/material-ui/SimplePaper";
+import MediaPaper from "../../shared/components/material-ui/MediaPaper";
 import Box from "@material-ui/core/Box";
 
-const Leaderboard = () => {
+const Inventory = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [loadedUsers, setLoadedUsers] = useState();
+  const [inventory, setInventory] = useState("s");
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const responseData = await sendRequest(
-          "http://localhost:5000/api/users"
-        );
+  // useEffect(() => {
+  //   const fetchInventory = async () => {
+  //     try {
+  //       const responseData = await sendRequest(
+  //         "http://localhost:5000/api/users/inventory"
+  //       );
 
-        setLoadedUsers(responseData.users);
-      } catch (err) {}
-    };
-    fetchUsers();
-  }, [sendRequest]);
+  //       setInventory(responseData);
+  //     } catch (err) {}
+  //   };
+  //   fetchInventory();
+  // }, [sendRequest]);
 
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      <SimplePaper title='Leaderboard'></SimplePaper>
+      <SimplePaper title='Inventory'></SimplePaper>
       {isLoading && (
         <div className='center'>
           <LoadingSpinner />
         </div>
       )}
-      {!isLoading && loadedUsers && (
-        <Box display='flex' flexDirection='row' justifyContent='center'>
-          <SimpleList items={loadedUsers}></SimpleList>
-        </Box>
-      )}
+      {!isLoading && inventory && <MediaPaper items={inventory}></MediaPaper>}
     </React.Fragment>
   );
 };
 
-export default Leaderboard;
+export default Inventory;

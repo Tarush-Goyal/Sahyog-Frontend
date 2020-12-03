@@ -50,7 +50,7 @@ const DonationsTable = () => {
     // console.log(data);
     try {
       const responseData = await sendRequest(
-        "http://localhost:5000/api/users/activereq",
+        "http://localhost:5000/api/users/acceptRequest",
         "POST",
         JSON.stringify(data),
         {
