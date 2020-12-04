@@ -156,7 +156,7 @@ const Status = () => {
                                 onClick={() => {
                                   handleOpening(index);
                                 }}>
-                                {open ? (
+                                {request.open ? (
                                   <KeyboardArrowUpIcon />
                                 ) : (
                                   <KeyboardArrowDownIcon />
@@ -207,15 +207,23 @@ const Status = () => {
                                     />
                                   </div>
                                 )}
-                                <Button
-                                  onClick={() => {
-                                    generateID(index);
-                                  }}
-                                  variant='outlined'
-                                  color='primary'
-                                  style={{ width: "20rem" }}>
-                                  Generate Volunteer ID Card
-                                </Button>
+                                <Box
+                                  display='flex'
+                                  flexDirection='row'
+                                  justifyContent='space-around'>
+                                  <Button
+                                    onClick={() => {
+                                      generateID(index);
+                                    }}
+                                    variant='outlined'
+                                    color='primary'
+                                    style={{ width: "20rem" }}>
+                                    Generate Volunteer ID Card
+                                  </Button>
+                                  <Typography variant='h5'>
+                                    OTP: {request.otp}
+                                  </Typography>
+                                </Box>
                               </Collapse>
                             </TableCell>
                           </TableRow>

@@ -3,6 +3,7 @@ import React from "react";
 import UserItem from "./UserItem";
 import Card from "../../shared/components/UIElements/Card";
 import "./UsersList.css";
+import Box from "@material-ui/core/Box";
 
 const UsersList = (props) => {
   if (props.items.length === 0) {
@@ -16,17 +17,27 @@ const UsersList = (props) => {
   }
 
   return (
-    <ul className='users-list'>
-      {props.items.map((user) => (
-        <UserItem
-          key={user.id}
-          id={user.id}
-          image={user.image}
-          name={user.name}
-          itemCount={user.items.length}
-        />
-      ))}
-    </ul>
+    <>
+      <ul className='users-list'>
+        <Box display='flex' flexDirection='column' style={{ width: "100%" }}>
+          {props.items.map((user) => (
+            <Box
+              display='flex'
+              flexDirection='row'
+              justifyContent='center'
+              style={{ width: "100%" }}>
+              <UserItem
+                key={user.id}
+                id={user.id}
+                image={user.image}
+                name={user.name}
+                itemCount={user.items.length}
+              />
+            </Box>
+          ))}
+        </Box>
+      </ul>
+    </>
   );
 };
 

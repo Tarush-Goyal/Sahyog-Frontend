@@ -7,6 +7,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,13 +32,6 @@ const SimpleList = (props) => {
       </div>
     );
   } else {
-    // <UserItem
-    //   key={user.id}
-    //   id={user.id}
-    //   image={user.image}
-    //   name={user.name}
-    //   itemCount={user.items.length}
-    // />;
     return (
       <List className={classes.root}>
         {props.items.map((user) => (

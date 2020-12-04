@@ -5,21 +5,23 @@ import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import makeStyles from "@material-ui/core/styles";
 import SimpleList from "../../shared/components/material-ui/SimpleList";
 import SimplePaper from "../../shared/components/material-ui/SimplePaper";
-
+import { useParams, useHistory } from "react-router-dom";
 import Path from "../../shared/Path";
-import UsersList from "../components/UsersList";
+import UsersList from "../../user/components/UsersList";
 
-const Leaderboard = () => {
+const VolunteerLeaderboard = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [loadedUsers, setLoadedUsers] = useState();
-
+  const id = useParams().id;
   useEffect(() => {
     console.log(Path);
     const fetchUsers = async () => {
       try {
-        const responseData = await sendRequest(`${Path}api/users`);
-
-        setLoadedUsers(responseData.users);
+        const responseData = await sendRequest(
+          `${Path}api/users/volunteerLeaderBoard/${id}`
+        );
+        console.log(responseData);
+        // setLoadedUsers(responseData.users);
       } catch (err) {}
     };
     fetchUsers();
@@ -43,4 +45,4 @@ const Leaderboard = () => {
   );
 };
 
-export default Leaderboard;
+export default VolunteerLeaderboard;

@@ -94,9 +94,16 @@ const MainHeader = () => {
               <Button
                 color='inherit'
                 onClick={() => {
-                  navigateTo("/leaderboard");
+                  navigateTo(`/leaderboard/${auth.userId}`);
                 }}>
                 Leaderboard
+              </Button>
+              <Button
+                color='inherit'
+                onClick={() => {
+                  navigateTo(`/status/${auth.userId}`);
+                }}>
+                Status of Donations
               </Button>
             </Box>
           )}

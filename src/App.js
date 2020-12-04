@@ -20,6 +20,8 @@ import { useAuth } from "./shared/hooks/auth-hook";
 import Leaderboard from "./user/pages/Leaderboard";
 import Inventory from "./ngoHead/pages/Inventory";
 import Status from "./user/pages/Status";
+import DonationsStatus from "./volunteer/pages/DonationsStatus";
+import VolunteerLeaderboard from "./volunteer/pages/VolunteerLeaderboard";
 
 const App = () => {
   const { token, login, logout, userId, type } = useAuth();
@@ -69,8 +71,12 @@ const App = () => {
         <Route path='/requests' exact>
           <DonationsTable></DonationsTable>
         </Route>
-        <Route path='/leaderboard' exact>
-          <h1>leaderboard</h1>
+        <Route path='/status/:id' exact>
+          <DonationsStatus></DonationsStatus>
+        </Route>
+        <Route path='/leaderboard/:id' exact>
+          <VolunteerLeaderboard></VolunteerLeaderboard>
+          {/* <h1>leaderboard</h1> */}
         </Route>
         <Redirect to='/requests' />
       </Switch>

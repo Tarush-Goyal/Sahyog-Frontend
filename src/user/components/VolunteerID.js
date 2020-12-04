@@ -15,6 +15,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import Path from "../../shared/Path";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,44 +35,52 @@ const useStyles = makeStyles((theme) => ({
   expandOpen: {
     transform: "rotate(180deg)",
   },
-  avatar: {
-    backgroundColor: red[500],
-  },
+  // avatar: {
+  //   backgroundColor: red[500],
+  // },
 }));
 
 class VolunteerID extends React.PureComponent {
   render() {
     return (
-      <Card style={{ padding: "2rem" }}>
+      <Card style={{ padding: "2rem", maxWidth: 345 }}>
         <CardHeader
-          avatar={<Avatar aria-label='recipe'>Rsawfegrshtx</Avatar>}
-          action={
-            <IconButton aria-label='settings'>
-              <MoreVertIcon />
-            </IconButton>
-          }
+          // avatar={
+          //   <Avatar
+          //     src={"http://localhost:5000/" + this.props.data.image}
+          //     aria-label='recipe'>
+          //     R
+          //   </Avatar>
+          // }
+          // action={
+          //   <IconButton aria-label='settings'>
+          //     <MoreVertIcon />
+          //   </IconButton>
+          // }
           title={this.props.data.name}
-          subheader={this.props.data.name}
+          subheader={this.props.data.email}
         />
         <CardMedia
-          image='/static/images/cards/paella.jpg'
+          style={{ height: 0, paddingTop: "56.25%" }}
+          image={Path + this.props.data.image}
           title='Paella dish'
         />
         <CardContent>
-          <Typography variant='body2' color='textSecondary' component='p'>
-            This impressive paella is a perfect party dish and a fun meal to
-            cook together with your guests. Add 1 cup of frozen peas along with
-            the mussels, if you like.
+          <Typography variant='body1' color='textSecondary' component='p'>
+            Name of NGO: {this.props.data.nameNGO}
           </Typography>
+          {/* <Typography variant='body1' color='textSecondary' component='p'>
+            Head of NGO: {this.props.data.headNGO}
+          </Typography> */}
         </CardContent>
-        <CardActions disableSpacing>
+        {/* <CardActions disableSpacing>
           <IconButton aria-label='add to favorites'>
             <FavoriteIcon />
           </IconButton>
           <IconButton aria-label='share'>
             <ShareIcon />
           </IconButton>
-        </CardActions>
+        </CardActions> */}
       </Card>
     );
   }
