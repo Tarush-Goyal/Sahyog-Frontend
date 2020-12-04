@@ -39,6 +39,7 @@ import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import FormGroup from "@material-ui/core/FormGroup";
+import Path from "../../shared/Path";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -269,7 +270,7 @@ const DonationForm = () => {
       formData.append("image", formState.inputs.image.value);
       console.log(formData);
       const responseData = await sendRequest(
-        "http://localhost:5000/api/donate",
+        `${Path}api/donate`,
         "POST",
         formData,
         {

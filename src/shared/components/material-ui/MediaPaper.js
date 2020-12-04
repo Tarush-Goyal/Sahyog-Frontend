@@ -19,6 +19,7 @@ import AddIcon from "@material-ui/icons/Add";
 import { green } from "@material-ui/core/colors";
 import RemoveIcon from "@material-ui/icons/Remove";
 import DeleteIcon from "@material-ui/icons/Delete";
+import Path from "../../Path";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,7 +61,7 @@ const MediaPaper = (props) => {
       />
       <CardMedia
         className={classes.media}
-        image={"http://localhost:5000/" + props.image}
+        image={Path + props.image}
         title='Paella dish' //name
       />
       <CardContent>

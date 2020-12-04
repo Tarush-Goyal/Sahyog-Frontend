@@ -24,6 +24,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Box from "@material-ui/core/Box";
+import Path from "../../shared/Path";
 
 const useStyles2 = makeStyles((theme) => ({
   root: {
@@ -401,7 +402,7 @@ const Auth = () => {
       // }
 
       const responseData = await sendRequest(
-        "http://localhost:5000/api/users/signup",
+        `${Path}api/users/signup`,
         "POST",
         formData
       );

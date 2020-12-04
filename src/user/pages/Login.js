@@ -8,6 +8,7 @@ import "./Login.css";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { AuthContext } from "../../shared/context/auth-context";
+import Path from "../../shared/Path";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -38,7 +39,7 @@ const Login = () => {
 
     try {
       const responseData = await sendRequest(
-        "http://localhost:5000/api/users/login",
+        `${Path}api/users/login`,
         "POST",
         JSON.stringify({
           email: validation.values.email,

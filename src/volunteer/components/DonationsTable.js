@@ -19,6 +19,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../shared/hooks/auth-hook";
+import Path from "../../shared/Path";
 
 const useStyles = makeStyles({
   table: {
@@ -50,7 +51,7 @@ const DonationsTable = () => {
     // console.log(data);
     try {
       const responseData = await sendRequest(
-        "http://localhost:5000/api/users/acceptRequest",
+        `${Path}api/users/acceptRequest`,
         "POST",
         JSON.stringify(data),
         {
@@ -73,7 +74,7 @@ const DonationsTable = () => {
     const activeDonations = async () => {
       try {
         const responseData = await sendRequest(
-          "http://localhost:5000/api/users/activeDonationRequest"
+          `${Path}api/users/activeDonationRequest`
         );
         let result = responseData.items.map((data) => ({
           _id: data._id,

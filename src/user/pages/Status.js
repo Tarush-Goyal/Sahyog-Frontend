@@ -30,7 +30,7 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Collapse from "@material-ui/core/Collapse";
 import { useReactToPrint } from "react-to-print";
-
+import Path from "../../shared/Path";
 import VolunteerID from "../components/VolunteerID";
 
 const useStyles = makeStyles({
@@ -73,7 +73,7 @@ const Status = () => {
     const fetchVolunteer = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/users/volunteerId/${donations[index].assignedVolunteer}`
+          `${Path}api/users/volunteerId/${donations[index].assignedVolunteer}`
         );
         console.log(responseData);
         setVolunteerInfo(responseData);
@@ -94,7 +94,7 @@ const Status = () => {
     const fetchDonations = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/users/itemsDonatedByUserId/${id}`
+          `${Path}api/users/itemsDonatedByUserId/${id}`
         );
         // console.log(responseData.items);
         let results = responseData.items;
