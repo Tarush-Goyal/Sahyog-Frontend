@@ -7,7 +7,7 @@ import SimpleList from "../../shared/components/material-ui/SimpleList";
 import SimplePaper from "../../shared/components/material-ui/SimplePaper";
 import { useParams, useHistory } from "react-router-dom";
 import Path from "../../shared/Path";
-import UsersList from "../../user/components/UsersList";
+import VolunteerList from "../components/VolunteerList";
 
 const VolunteerLeaderboard = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -18,14 +18,23 @@ const VolunteerLeaderboard = () => {
     const fetchUsers = async () => {
       try {
         const responseData = await sendRequest(
-          `${Path}api/users/volunteerLeaderBoard/${id}`
+          `${Path}api/volunteer/volunteerLeaderBoard/${id}`
         );
-        console.log(responseData);
-        setLoadedUsers(responseData.items);
+        sortUsers(responseData.items);
       } catch (err) {}
     };
     fetchUsers();
   }, [sendRequest]);
+
+  const sortUsers = (data) => {
+    console.log(data);
+    data.sort(
+      (a, b) =>
+        parseFloat(b.donationAccepted.length) -
+        parseFloat(a.donationAccepted.length)
+    );
+    setLoadedUsers(data);
+  };
 
   return (
     <React.Fragment>
@@ -38,7 +47,7 @@ const VolunteerLeaderboard = () => {
       )}
       {!isLoading && loadedUsers && (
         //
-        <UsersList items={loadedUsers}></UsersList>
+        <VolunteerList items={loadedUsers}></VolunteerList>
         // </Box>
       )}
     </React.Fragment>

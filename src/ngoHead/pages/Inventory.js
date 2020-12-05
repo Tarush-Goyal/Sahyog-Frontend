@@ -6,23 +6,28 @@ import makeStyles from "@material-ui/core/styles";
 import SimplePaper from "../../shared/components/material-ui/SimplePaper";
 import MediaPaper from "../../shared/components/material-ui/MediaPaper";
 import Box from "@material-ui/core/Box";
+import { useAuth } from "../../shared/hooks/auth-hook";
+import Path from "../../shared/Path";
+import { useParams, useHistory } from "react-router-dom";
 
 const Inventory = () => {
+  // const { token, login, logout, userId, type } = useAuth();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [inventory, setInventory] = useState("s");
+  const [inventory, setInventory] = useState();
+  const id = useParams().id;
 
-  // useEffect(() => {
-  //   const fetchInventory = async () => {
-  //     try {
-  //       const responseData = await sendRequest(
-  //         "http://localhost:5000/api/users/inventory"
-  //       );
-
-  //       setInventory(responseData);
-  //     } catch (err) {}
-  //   };
-  //   fetchInventory();
-  // }, [sendRequest]);
+  useEffect(() => {
+    const fetchInventory = async () => {
+      try {
+        const responseData = await sendRequest(
+          `${Path}api/ngohead/inventory/${id}`
+        );
+        console.log(responseData.items);
+        setInventory(responseData.items);
+      } catch (err) {}
+    };
+    fetchInventory();
+  }, [sendRequest]);
 
   return (
     <React.Fragment>

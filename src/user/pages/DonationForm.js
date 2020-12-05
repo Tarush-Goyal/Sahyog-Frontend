@@ -254,7 +254,6 @@ const DonationForm = () => {
   const authSubmitHandler = async (event) => {
     let id = "";
     event.preventDefault();
-    // if (auth.isLoggedIn) {
     try {
       const formData = new FormData();
       formData.append("itemName", validation.values.itemName);
@@ -270,7 +269,7 @@ const DonationForm = () => {
       formData.append("image", formState.inputs.image.value);
       console.log(formData);
       const responseData = await sendRequest(
-        `${Path}api/donate`,
+        `${Path}api/homeowner/donateItem`,
         "POST",
         formData,
         {

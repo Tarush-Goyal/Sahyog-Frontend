@@ -73,7 +73,7 @@ const Status = () => {
     const fetchVolunteer = async () => {
       try {
         const responseData = await sendRequest(
-          `${Path}api/users/volunteerId/${donations[index].assignedVolunteer}`
+          `${Path}api/volunteer/volunteerId/${donations[index].assignedVolunteer}`
         );
         console.log(responseData);
         setVolunteerInfo(responseData);
@@ -94,7 +94,7 @@ const Status = () => {
     const fetchDonations = async () => {
       try {
         const responseData = await sendRequest(
-          `${Path}api/users/itemsDonatedByUserId/${id}`
+          `${Path}api/homeowner/itemsDonatedByUserId/${id}`
         );
         // console.log(responseData.items);
         let results = responseData.items;

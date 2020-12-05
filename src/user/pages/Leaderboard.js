@@ -17,13 +17,21 @@ const Leaderboard = () => {
     console.log(Path);
     const fetchUsers = async () => {
       try {
-        const responseData = await sendRequest(`${Path}api/users`);
+        const responseData = await sendRequest(`${Path}api/homeowner`);
 
-        setLoadedUsers(responseData.users);
+        sortUsers(responseData.users);
       } catch (err) {}
     };
     fetchUsers();
   }, [sendRequest]);
+
+  const sortUsers = (data) => {
+    console.log(data);
+    data.sort(
+      (a, b) => parseFloat(b.items.length) - parseFloat(a.items.length)
+    );
+    setLoadedUsers(data);
+  };
 
   return (
     <React.Fragment>
@@ -34,11 +42,7 @@ const Leaderboard = () => {
           <LoadingSpinner />
         </div>
       )}
-      {!isLoading && loadedUsers && (
-        //
-        <UsersList items={loadedUsers}></UsersList>
-        // </Box>
-      )}
+      {!isLoading && loadedUsers && <UsersList items={loadedUsers}></UsersList>}
     </React.Fragment>
   );
 };

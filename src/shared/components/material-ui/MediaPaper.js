@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -19,11 +19,13 @@ import AddIcon from "@material-ui/icons/Add";
 import { green } from "@material-ui/core/colors";
 import RemoveIcon from "@material-ui/icons/Remove";
 import DeleteIcon from "@material-ui/icons/Delete";
+import DoneIcon from "@material-ui/icons/Done";
 import Path from "../../Path";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
+    minWidth: 345,
     margin: theme.spacing(1),
   },
   media: {
@@ -47,61 +49,132 @@ const useStyles = makeStyles((theme) => ({
 
 const MediaPaper = (props) => {
   const classes = useStyles();
+  const [donation, setDonation] = useState([...props.items]);
   const [expanded, setExpanded] = React.useState(false);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
+  useEffect(() => {
+    setDonation(props.items);
+  }, [props.items]);
+
+  const handleExpandClick = (index) => {
+    const tempDonation = [...donation];
+    if (tempDonation[index].expand) {
+      tempDonation[index].expand = false;
+    } else {
+      tempDonation[index].expand = true;
+    }
+    setDonation(tempDonation);
+    // donation.expand=true;
+    // setExpanded(!expanded);
+  };
+
+  const submitQuantity = () => {
+    console.log(donation);
+  };
+
+  const handleQuantityMinus = (index) => {
+    let tempDonation = [...donation];
+    tempDonation[index].quantity = +tempDonation[index].quantity - 1;
+    setDonation(tempDonation);
+  };
+
+  const handleQuantityPlus = (index) => {
+    let tempDonation = [...donation];
+    tempDonation[index].quantity = +tempDonation[index].quantity + 1;
+    setDonation(tempDonation);
+  };
+
+  const handleQuantityDelete = (index) => {
+    let tempDonation = [...donation];
+    tempDonation[index].quantity = 0;
+    setDonation(tempDonation);
   };
 
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        title={props.name} //name
-        subheader={props.category} //category
-      />
-      <CardMedia
-        className={classes.media}
-        image={Path + props.image}
-        title='Paella dish' //name
-      />
-      <CardContent>
-        <Typography
-          variant='body2'
-          color='textSecondary'
-          component='p'
-          //quantity
-        >
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        EDIT
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label='show more'>
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded} timeout='auto' unmountOnExit>
-        <CardContent>
-          <IconButton aria-label='plus'>
-            <AddIcon style={{ color: green[500] }} />
-          </IconButton>
-          <IconButton aria-label='minus'>
-            <RemoveIcon color='secondary' />
-          </IconButton>
-          <IconButton aria-label='delete'>
-            <DeleteIcon />
-          </IconButton>
-        </CardContent>
-      </Collapse>
-    </Card>
+    <>
+      {donation && (
+        <Box
+          display='flex'
+          flexWrap='wrap'
+          justifyContent='center'
+          alignItems='flex-start'>
+          {/* // <Box> */}
+          {donation.map((item, index) => (
+            <Card className={classes.root}>
+              <CardHeader
+                title={item.itemName} //name
+                subheader={item.category} //category
+              />
+              <CardMedia
+                className={classes.media}
+                image={Path + item.image}
+                title='Paella dish' //name
+              />
+              <CardContent>
+                <Typography
+                  variant='h6'
+                  component='p'
+                  //quantity
+                >
+                  Quantity: {item.quantity}
+                </Typography>
+              </CardContent>
+              <CardActions disableSpacing>
+                Edit Quantity
+                <IconButton
+                  className={clsx(classes.expand, {
+                    [classes.expandOpen]: expanded,
+                  })}
+                  onClick={() => {
+                    handleExpandClick(index);
+                  }}
+                  aria-expanded={expanded}
+                  aria-label='show more'>
+                  <ExpandMoreIcon />
+                </IconButton>
+              </CardActions>
+              <Collapse in={item.expand} timeout='auto' unmountOnExit>
+                <CardContent>
+                  <Box
+                    display='flex'
+                    flexDirection='row'
+                    justifyContent='space-around'>
+                    <IconButton
+                      aria-label='plus'
+                      onClick={() => {
+                        handleQuantityPlus(index);
+                      }}>
+                      <AddIcon style={{ color: green[500] }} />
+                    </IconButton>
+                    <IconButton
+                      aria-label='minus'
+                      onClick={() => {
+                        handleQuantityMinus(index);
+                      }}>
+                      <RemoveIcon color='secondary' />
+                    </IconButton>
+                    <IconButton
+                      aria-label='delete'
+                      onClick={() => {
+                        handleQuantityDelete(index);
+                      }}>
+                      <DeleteIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label='done'
+                      onClick={() => {
+                        submitQuantity(index);
+                      }}>
+                      <DoneIcon />
+                    </IconButton>
+                  </Box>
+                </CardContent>
+              </Collapse>
+            </Card>
+          ))}
+        </Box>
+      )}
+    </>
   );
 };
 

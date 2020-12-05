@@ -1,8 +1,8 @@
 import React from "react";
 
-import UserItem from "./UserItem";
+import UserItem from "../../user/components/UserItem";
 import Card from "../../shared/components/UIElements/Card";
-import "./UsersList.css";
+import "../../user/components/UsersList.css";
 import Box from "@material-ui/core/Box";
 
 const UsersList = (props) => {
@@ -34,6 +34,17 @@ const UsersList = (props) => {
                   name={user.name}
                   itemCount={user.items.length}
                   text='Donation'
+                />
+              )}
+
+              {user.donationAccepted && (
+                <UserItem
+                  key={user.id}
+                  id={user.id}
+                  image={user.image}
+                  name={user.name}
+                  itemCount={user.donationAccepted.length}
+                  text='Picked up Donation'
                 />
               )}
             </Box>

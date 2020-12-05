@@ -51,7 +51,7 @@ const DonationsTable = () => {
     // console.log(data);
     try {
       const responseData = await sendRequest(
-        `${Path}api/users/acceptRequest`,
+        `${Path}api/volunteer/acceptRequest`,
         "POST",
         JSON.stringify(data),
         {
@@ -74,7 +74,7 @@ const DonationsTable = () => {
     const activeDonations = async () => {
       try {
         const responseData = await sendRequest(
-          `${Path}api/users/activeDonationRequest`
+          `${Path}api/volunteer/activeDonationRequest`
         );
         let result = responseData.items.map((data) => ({
           _id: data._id,

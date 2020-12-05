@@ -19,9 +19,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Alert from "@material-ui/lab/Alert";
-// import { useAuth } from "../../shared/hooks/auth-hook";
+
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
@@ -30,10 +29,8 @@ import { useParams, useHistory } from "react-router-dom";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Collapse from "@material-ui/core/Collapse";
-import { useReactToPrint } from "react-to-print";
 import Path from "../../shared/Path";
 import { useAuth } from "../../shared/hooks/auth-hook";
-// import VolunteerID from "../components/VolunteerID";
 
 const useStyles = makeStyles({
   table: {
@@ -80,20 +77,18 @@ const DonationsStatus = () => {
     setOpen2(true);
     setIndex(index);
     console.log(donations[activeIndex].userId.name);
-    // setDialogName(requests[index].itemName);
   };
 
   const handleClickOpen = (index) => {
     setOTPStatus(true);
     setOpen(true);
     setIndex(index);
-    // setDialogName(requests[index].itemName);
   };
 
   const confirmPickup = async () => {
     try {
       const responseData = await sendRequest(
-        `${Path}api/users/pickRequest/${donations[activeIndex].id}`,
+        `${Path}api/volunteer/pickRequest/${donations[activeIndex].id}`,
         "POST"
       );
     } catch (err) {}
@@ -103,7 +98,6 @@ const DonationsStatus = () => {
   const checkOTP = () => {
     console.log(donations[activeIndex].otp);
     if (OTP == donations[activeIndex].otp) {
-      // console.log("accepted");
       setOTPStatus(true);
       setOpen(false);
       confirmPickup();
@@ -119,45 +113,16 @@ const DonationsStatus = () => {
   const handleClose = (status) => {
     if (status == true) {
       checkOTP();
-      // console.log(requests[currentIndex]);
-      // authSubmitHandler();
-      // history.push("/leaderboard");
     } else {
       setOpen(false);
     }
-  };
-
-  const componentRef = useRef();
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
-
-  const generateID = (index) => {
-    const fetchVolunteer = async () => {
-      try {
-        const responseData = await sendRequest(
-          `${Path}api/users/volunteerId/${donations[index].assignedVolunteer}`
-        );
-        console.log(responseData);
-        setVolunteerInfo(responseData);
-        setValue(true);
-        handlePrint();
-        // setValue(return(<h1>grgr</h1>));
-      } catch (err) {}
-    };
-    fetchVolunteer();
-
-    // if (volunteerInfo) {
-
-    // }
-    console.log(value);
   };
 
   useEffect(() => {
     const fetchDonations = async () => {
       try {
         const responseData = await sendRequest(
-          `${Path}api/users/itemsAcceptedByVolunteerId/${id}`
+          `${Path}api/volunteer/itemsAcceptedByVolunteerId/${id}`
         );
         console.log(responseData.items);
         let results = responseData.items;

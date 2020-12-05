@@ -157,9 +157,7 @@ const Auth = () => {
   let [user1, setUser] = useState("homeowner");
 
   const [value, setValue] = React.useState("female");
-  const [selectedDate, setSelectedDate] = React.useState(
-    new Date("2014-08-18T21:11:54")
-  );
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const handleChange = (event) => {
     setValue(event.target.value);

@@ -69,7 +69,7 @@ const MainHeader = () => {
               <Button
                 color='inherit'
                 onClick={() => {
-                  navigateTo("/inventory");
+                  navigateTo(`/inventory/${auth.userId}`);
                 }}>
                 Inventory
               </Button>

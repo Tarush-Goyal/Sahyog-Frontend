@@ -39,21 +39,21 @@ const App = () => {
           <Leaderboard></Leaderboard>
         </Route>
 
-        <Route path='/users' exact>
+        {/* <Route path='/users' exact>
           <Users />
-        </Route>
+        </Route> */}
 
         <Route path='/status/:id' exact>
           <Status></Status>
         </Route>
 
-        <Redirect to='/users' />
+        <Redirect to='/leaderboard' />
       </Switch>
     );
   } else if (token && type === "head") {
     routes = (
       <Switch>
-        <Route path='/inventory' exact>
+        <Route path='/inventory/:id' exact>
           {/* <h1>inventory</h1> */}
           <Inventory></Inventory>
         </Route>
