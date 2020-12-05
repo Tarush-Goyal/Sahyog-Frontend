@@ -26,13 +26,27 @@ const UsersList = (props) => {
               flexDirection='row'
               justifyContent='center'
               style={{ width: "100%" }}>
-              <UserItem
-                key={user.id}
-                id={user.id}
-                image={user.image}
-                name={user.name}
-                itemCount={user.items.length}
-              />
+              {user.items && (
+                <UserItem
+                  key={user.id}
+                  id={user.id}
+                  image={user.image}
+                  name={user.name}
+                  itemCount={user.items.length}
+                  text='Donation'
+                />
+              )}
+
+              {user.donationAccepted && (
+                <UserItem
+                  key={user.id}
+                  id={user.id}
+                  image={user.image}
+                  name={user.name}
+                  itemCount={user.donationAccepted.length}
+                  text='Picked up Donation'
+                />
+              )}
             </Box>
           ))}
         </Box>

@@ -21,7 +21,7 @@ const VolunteerLeaderboard = () => {
           `${Path}api/users/volunteerLeaderBoard/${id}`
         );
         console.log(responseData);
-        // setLoadedUsers(responseData.users);
+        setLoadedUsers(responseData.items);
       } catch (err) {}
     };
     fetchUsers();

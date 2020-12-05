@@ -18,7 +18,7 @@ const UserItem = (props) => {
             <h2>{props.name}</h2>
             <h3>
               {props.itemCount}{" "}
-              {props.itemCount === 1 ? "Donation" : "Donations"}
+              {props.itemCount === 1 ? props.text : props.text + "s"}
             </h3>
           </div>
         </Link>
