@@ -21,6 +21,7 @@ import RemoveIcon from "@material-ui/icons/Remove";
 import DeleteIcon from "@material-ui/icons/Delete";
 import DoneIcon from "@material-ui/icons/Done";
 import Path from "../../Path";
+import { useHttpClient } from "../../../shared/hooks/http-hook";
 import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
@@ -51,6 +52,7 @@ const MediaPaper = (props) => {
   const classes = useStyles();
   const [donation, setDonation] = useState([...props.items]);
   const [expanded, setExpanded] = React.useState(false);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   useEffect(() => {
     setDonation(props.items);
@@ -64,12 +66,23 @@ const MediaPaper = (props) => {
       tempDonation[index].expand = true;
     }
     setDonation(tempDonation);
-    // donation.expand=true;
-    // setExpanded(!expanded);
   };
 
-  const submitQuantity = () => {
-    console.log(donation);
+  const submitQuantity = async (index) => {
+    console.log(donation[index]);
+    try {
+      const responseData = await sendRequest(
+        `${Path}api/ngohead/completeRequest`,
+        "POST",
+        JSON.stringify({
+          _id: donation[index]._id,
+          quantity: donation[index].quantity,
+        }),
+        {
+          "Content-Type": "application/json",
+        }
+      );
+    } catch (err) {}
   };
 
   const handleQuantityMinus = (index) => {
@@ -165,7 +178,7 @@ const MediaPaper = (props) => {
                       onClick={() => {
                         submitQuantity(index);
                       }}>
-                      <DoneIcon />
+                      <DoneIcon color='primary' />
                     </IconButton>
                   </Box>
                 </CardContent>

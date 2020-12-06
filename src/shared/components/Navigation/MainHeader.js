@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { AuthContext } from "../../context/auth-context";
 import Box from "@material-ui/core/Box";
+import SimpleMenu from "../../../shared/components/material-ui/SimpleMenu";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,7 +66,8 @@ const MainHeader = () => {
             </Box>
           )}
           {auth.type === "head" && (
-            <Box>
+            <Box display='flex' flexDirection='row'>
+              <SimpleMenu></SimpleMenu>
               <Button
                 color='inherit'
                 onClick={() => {
@@ -76,7 +78,7 @@ const MainHeader = () => {
               <Button
                 color='inherit'
                 onClick={() => {
-                  navigateTo("/volunteers");
+                  navigateTo(`/volunteers/${auth.userId}`);
                 }}>
                 Volunteers
               </Button>

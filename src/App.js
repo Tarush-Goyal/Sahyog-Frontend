@@ -22,6 +22,7 @@ import Inventory from "./ngoHead/pages/Inventory";
 import Status from "./user/pages/Status";
 import DonationsStatus from "./volunteer/pages/DonationsStatus";
 import VolunteerLeaderboard from "./volunteer/pages/VolunteerLeaderboard";
+import NGOVolunteerDetails from "./ngoHead/pages/NGOVolunteerDetails";
 
 const App = () => {
   const { token, login, logout, userId, type } = useAuth();
@@ -57,8 +58,9 @@ const App = () => {
           {/* <h1>inventory</h1> */}
           <Inventory></Inventory>
         </Route>
-        <Route path='/volunteers' exact>
-          <h1>volunteers</h1>
+        <Route path='/volunteers/:id' exact>
+          {/* <h1>volunteers</h1> */}
+          <NGOVolunteerDetails></NGOVolunteerDetails>
         </Route>
         <Redirect to='/inventory' />
       </Switch>
