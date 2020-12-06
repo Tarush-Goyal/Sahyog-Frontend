@@ -22,7 +22,9 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import DoneIcon from "@material-ui/icons/Done";
 import Path from "../../Path";
 import { useHttpClient } from "../../../shared/hooks/http-hook";
+import { useAuth } from "../../../shared/hooks/auth-hook";
 import Box from "@material-ui/core/Box";
+import { useParams, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,12 +55,17 @@ const MediaPaper = (props) => {
   const [donation, setDonation] = useState([...props.items]);
   const [expanded, setExpanded] = React.useState(false);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { token, login, logout, userId, type } = useAuth();
+  const [originalQuantity, setOriginalQuantity] = useState();
+  // const [id, setId] = useState();
+  const history = useHistory();
 
   useEffect(() => {
     setDonation(props.items);
   }, [props.items]);
 
   const handleExpandClick = (index) => {
+    setOriginalQuantity(donation[index].quantity);
     const tempDonation = [...donation];
     if (tempDonation[index].expand) {
       tempDonation[index].expand = false;
@@ -69,6 +76,7 @@ const MediaPaper = (props) => {
   };
 
   const submitQuantity = async (index) => {
+    // setId(userId);
     console.log(donation[index]);
     try {
       const responseData = await sendRequest(
@@ -82,6 +90,8 @@ const MediaPaper = (props) => {
           "Content-Type": "application/json",
         }
       );
+      history.push(`/volunteers/${props.route}`);
+      console.log(userId);
     } catch (err) {}
   };
 
@@ -152,20 +162,24 @@ const MediaPaper = (props) => {
                     display='flex'
                     flexDirection='row'
                     justifyContent='space-around'>
-                    <IconButton
-                      aria-label='plus'
-                      onClick={() => {
-                        handleQuantityPlus(index);
-                      }}>
-                      <AddIcon style={{ color: green[500] }} />
-                    </IconButton>
-                    <IconButton
-                      aria-label='minus'
-                      onClick={() => {
-                        handleQuantityMinus(index);
-                      }}>
-                      <RemoveIcon color='secondary' />
-                    </IconButton>
+                    {donation[index].quantity < originalQuantity && (
+                      <IconButton
+                        aria-label='plus'
+                        onClick={() => {
+                          handleQuantityPlus(index);
+                        }}>
+                        <AddIcon style={{ color: green[500] }} />
+                      </IconButton>
+                    )}
+                    {donation[index].quantity > 0 && (
+                      <IconButton
+                        aria-label='minus'
+                        onClick={() => {
+                          handleQuantityMinus(index);
+                        }}>
+                        <RemoveIcon color='secondary' />
+                      </IconButton>
+                    )}
                     <IconButton
                       aria-label='delete'
                       onClick={() => {

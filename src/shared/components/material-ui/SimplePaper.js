@@ -20,7 +20,7 @@ const SimplePaper = (props) => {
 
   return (
     <div className={classes.root}>
-      <Paper elevation={props.elevation}>
+      <Paper elevation={6}>
         <Box
           style={{ width: "100%" }}
           display='flex'

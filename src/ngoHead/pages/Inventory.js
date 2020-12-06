@@ -38,7 +38,9 @@ const Inventory = () => {
           <LoadingSpinner />
         </div>
       )}
-      {!isLoading && inventory && <MediaPaper items={inventory}></MediaPaper>}
+      {!isLoading && inventory && (
+        <MediaPaper route={id} items={inventory}></MediaPaper>
+      )}
     </React.Fragment>
   );
 };

@@ -227,7 +227,7 @@ const DonationsStatus = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <SimplePaper elevation='24' title='Status of Donations'></SimplePaper>
+      <SimplePaper title='Status of Donations'></SimplePaper>
       <Box display='flex' flexDirection='row' justifyContent='center'>
         <Box>
           <Card style={{ backgroundColor: "#f5f5f5", width: "74rem" }}>

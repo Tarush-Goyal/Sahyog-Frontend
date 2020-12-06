@@ -51,7 +51,7 @@ const App = () => {
         <Redirect to='/leaderboard' />
       </Switch>
     );
-  } else if (token && type === "head") {
+  } else if (token && userId && type === "head") {
     routes = (
       <Switch>
         <Route path='/inventory/:id' exact>
@@ -62,7 +62,7 @@ const App = () => {
           {/* <h1>volunteers</h1> */}
           <NGOVolunteerDetails></NGOVolunteerDetails>
         </Route>
-        <Redirect to='/inventory' />
+        <Redirect to={"/inventory/" + userId} />
       </Switch>
     );
   }

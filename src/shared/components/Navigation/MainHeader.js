@@ -67,7 +67,7 @@ const MainHeader = () => {
           )}
           {auth.type === "head" && (
             <Box display='flex' flexDirection='row'>
-              <SimpleMenu></SimpleMenu>
+              <SimpleMenu id={auth.userId}></SimpleMenu>
               <Button
                 color='inherit'
                 onClick={() => {
