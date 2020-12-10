@@ -142,7 +142,7 @@ const Status = () => {
                             <TableCell
                               style={{
                                 visibility:
-                                  request.status == "pending"
+                                  request.status == "Active"
                                     ? "visible"
                                     : "hidden",
                               }}>
@@ -175,11 +175,13 @@ const Status = () => {
                               align='center'
                               style={{
                                 color:
-                                  request.status == "active"
+                                  request.status == "Pending"
                                     ? "red"
-                                    : request.status == "pending"
+                                    : request.status == "Active"
                                     ? "blue"
-                                    : "green",
+                                    : request.status == "Picked Up"
+                                    ? "green"
+                                    : "yellow",
                               }}>
                               {request.status}
                             </TableCell>

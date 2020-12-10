@@ -58,6 +58,7 @@ const DonationsTable = () => {
           "Content-Type": "application/json",
         }
       );
+      console.log(responseData);
     } catch (err) {}
   };
 
@@ -140,12 +141,6 @@ const DonationsTable = () => {
       </Dialog>
       <SimplePaper title='Active Donation Requests'></SimplePaper>
       <TableContainer component={Paper}>
-        {/* <button
-          onClick={() => {
-            console.log(requests);
-          }}>
-          efrv
-        </button> */}
         {isLoading && (
           <div className='center'>
             <LoadingSpinner />

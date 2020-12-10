@@ -32,6 +32,7 @@ export default function SimpleMenu(props) {
   }, [sendRequest]);
 
   const handleClick = (event) => {
+    console.log("clicked");
     setAnchorEl(event.currentTarget);
   };
 

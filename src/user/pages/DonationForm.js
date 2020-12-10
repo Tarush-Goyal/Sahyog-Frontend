@@ -16,13 +16,7 @@ import "./Auth.css";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
 import Typography from "@material-ui/core/Typography";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Box from "@material-ui/core/Box";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -32,13 +26,6 @@ import Select from "@material-ui/core/Select";
 import Grid from "@material-ui/core/Grid";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
-import VolumeUp from "@material-ui/icons/VolumeUp";
-import Checkbox from "@material-ui/core/Checkbox";
-import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@material-ui/icons/CheckBox";
-import Favorite from "@material-ui/icons/Favorite";
-import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
-import FormGroup from "@material-ui/core/FormGroup";
 import Path from "../../shared/Path";
 
 const useStyles = makeStyles((theme) => ({
@@ -74,15 +61,6 @@ const useStyles3 = makeStyles({
 
 const DonationForm = () => {
   let history = useHistory();
-  const [state, setState] = React.useState({
-    checkedA: true,
-    checkedB: true,
-    checkedF: true,
-    checkedG: true,
-  });
-  const handleCheckedChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
   const classes = useStyles();
   const classes2 = useStyles2();
   const classes3 = useStyles3();
@@ -554,19 +532,6 @@ const DonationForm = () => {
               </Box>
             </Box>
 
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={state.checkedB}
-                    onChange={handleCheckedChange}
-                    name='checkedB'
-                    color='primary'
-                  />
-                }
-                label='Save Address'
-              />
-            </FormGroup>
             <Box
               display='flex'
               flexDirection='row'

@@ -68,17 +68,10 @@ const NGOVolunteerDetails = () => {
                 <Table className={classes.table} aria-label='simple table'>
                   <TableHead>
                     <TableRow>
-                      {/* <Box
-                        display='flex'
-                        flexDirection='row'
-                        justifyContent='space-around'> */}
                       <TableCell align='center'>Volunteer Image</TableCell>
                       <TableCell align='center'>Volunteer Name</TableCell>
                       <TableCell align='center'>Email</TableCell>
                       <TableCell align='center'>Donations Picked Up</TableCell>
-                      {/* <TableCell align='center'>Pickup Date</TableCell> */}
-                      {/* <TableCell align='center'>Status</TableCell> */}
-                      {/* </Box> */}
                     </TableRow>
                   </TableHead>
                   {isLoading && (
@@ -100,8 +93,9 @@ const NGOVolunteerDetails = () => {
                                 flexDirection='row'
                                 justifyContent='center'>
                                 <Avatar
-                                  alt='Remy Sharp'
-                                  src={Path + volunteer.image}
+                                  alt={volunteer.name}
+                                  // src='http://localhost:5000/uploads/images/f3749080-3a41-11eb-a1ed-d35c112b1685.jpeg'
+                                  src={`${Path}${volunteer.image}`}
                                 />
                               </Box>
                             </TableCell>
@@ -117,21 +111,6 @@ const NGOVolunteerDetails = () => {
                             <TableCell align='center'>
                               {volunteer.donationAccepted.length}
                             </TableCell>
-                            {/* <TableCell align='center'>
-                              {request.date.slice(0, 16)}
-                            </TableCell>
-                            <TableCell
-                              align='center'
-                              style={{
-                                color:
-                                  request.status == "active"
-                                    ? "red"
-                                    : request.status == "pending"
-                                    ? "blue"
-                                    : "green",
-                              }}>
-                              {request.status}
-                            </TableCell> */}
                           </TableRow>
                         </>
                       ))}

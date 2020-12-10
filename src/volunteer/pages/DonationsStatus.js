@@ -91,6 +91,7 @@ const DonationsStatus = () => {
         `${Path}api/volunteer/pickRequest/${donations[activeIndex].id}`,
         "POST"
       );
+      console.log(responseData);
     } catch (err) {}
     history.push(`/requests`);
   };
@@ -288,11 +289,15 @@ const DonationsStatus = () => {
                               align='center'
                               style={{
                                 color:
-                                  request.status == "active"
+                                  request.status == "Pending"
                                     ? "red"
-                                    : request.status == "pending"
+                                    : request.status == "Active"
                                     ? "blue"
-                                    : "green",
+                                    : request.status == "Picked Up"
+                                    ? "green"
+                                    : request.status == "Complete"
+                                    ? "yellow"
+                                    : "",
                               }}>
                               {request.status}
                             </TableCell>
@@ -327,7 +332,7 @@ const DonationsStatus = () => {
                                     style={{
                                       width: "20rem",
                                       display:
-                                        request.status == "pending"
+                                        request.status == "Active"
                                           ? "initial"
                                           : "none",
                                     }}>

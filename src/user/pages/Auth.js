@@ -156,7 +156,7 @@ const Auth = () => {
   const [isLoginMode, setIsLoginMode] = useState(false);
   let [user1, setUser] = useState("homeowner");
 
-  const [value, setValue] = React.useState("female");
+  const [value, setValue] = React.useState("homeowner");
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const handleChange = (event) => {
@@ -170,10 +170,6 @@ const Auth = () => {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
   };
 
   const handleDateChange = (date) => {
@@ -383,32 +379,32 @@ const Auth = () => {
   const authSubmitHandler = async (event) => {
     event.preventDefault();
 
-    try {
-      const formData = new FormData();
-      formData.append("email", validation.values.email);
-      formData.append("firstName", validation.values.firstName);
-      formData.append("lastName", validation.values.lastName);
-      formData.append("password", validation.values.password);
-      formData.append("nameNGO", validation.values.nameNGO);
-      formData.append("descriptionNGO", validation.values.descriptionNGO);
-      formData.append("date", selectedDate);
-      formData.append("image", formState.inputs.image.value);
-      formData.append("type", value);
+    // try {
+    const formData = new FormData();
+    formData.append("email", validation.values.email);
+    formData.append("firstName", validation.values.firstName);
+    formData.append("lastName", validation.values.lastName);
+    formData.append("password", validation.values.password);
+    formData.append("nameNGO", validation.values.nameNGO);
+    formData.append("descriptionNGO", validation.values.descriptionNGO);
+    formData.append("date", selectedDate);
+    formData.append("image", formState.inputs.image.value);
+    formData.append("type", value);
 
-      // for (var pair of formData.entries()) {
-      //   console.log(pair[0] + ", " + pair[1]);
-      // }
-
-      const responseData = await sendRequest(
-        `${Path}api/users/signup`,
-        "POST",
-        formData
-      );
-
-      auth.login(responseData.userId, responseData.token, responseData.type);
-    } catch (err) {
-      console.log("error: " + err);
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
     }
+
+    const responseData = await sendRequest(
+      `${Path}api/users/signup`,
+      "POST",
+      formData
+    );
+
+    auth.login(responseData.userId, responseData.token, responseData.type);
+    // } catch (err) {
+    //   console.log("error: " + err);
+    // }
   };
 
   return (

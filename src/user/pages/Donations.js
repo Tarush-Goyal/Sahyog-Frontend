@@ -3,19 +3,14 @@ import { useHttpClient } from "../../shared/hooks/http-hook";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import { makeStyles } from "@material-ui/core/styles";
-
 import Card from "@material-ui/core/Card";
-
 import CardMedia from "@material-ui/core/CardMedia";
-
-import "./Login.css";
 import Box from "@material-ui/core/Box";
-
 import Alert from "@material-ui/lab/Alert";
-
 import { AuthContext } from "../../shared/context/auth-context";
-import "./Donations.css";
 import DonationForm from "./DonationForm.js";
+import "./Login.css";
+import "./Donations.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
