@@ -9,9 +9,9 @@ import {
 import DonationsTable from "./volunteer/components/DonationsTable";
 import Donations from "./user/pages/Donations";
 import Users from "./user/pages/Users";
-import NewPlace from "./places/pages/NewPlace";
-import UserPlaces from "./places/pages/UserPlaces";
-import UpdatePlace from "./places/pages/UpdatePlace";
+// import NewPlace from "./places/pages/NewPlace";
+// import UserPlaces from "./places/pages/UserPlaces";
+// import UpdatePlace from "./places/pages/UpdatePlace";
 import Auth from "./user/pages/Auth";
 import SimpleTabs from "./shared/components/material-ui/SimpleTabs";
 import MainNavigation from "./shared/components/Navigation/MainNavigation";
