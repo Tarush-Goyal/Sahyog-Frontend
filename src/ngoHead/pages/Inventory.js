@@ -38,6 +38,8 @@ const Inventory = () => {
       setInventory(inventory2);
       // console.log(ts.get("c"));
       setInventory(ts.get(event.target.value));
+    } else {
+      setInventory(inventory2);
     }
   };
 
