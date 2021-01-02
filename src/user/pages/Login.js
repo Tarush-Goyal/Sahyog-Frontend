@@ -36,6 +36,7 @@ const Login = () => {
 
   const authSubmitHandler = async (event) => {
     event.preventDefault();
+    console.log(validation.values.email);
 
     try {
       const responseData = await sendRequest(
@@ -64,7 +65,7 @@ const Login = () => {
     switch (name) {
       case "email":
         errors.email = validEmailRegex.test(value) ? "" : "Email is not valid!";
-        values.email = value;
+        values.email = value.toLowerCase();
         break;
       case "password":
         errors.password =

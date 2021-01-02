@@ -107,15 +107,15 @@ const Auth = () => {
     switch (name) {
       case "firstName":
         errors.firstName = value.length < 1 ? "First Name is required!" : "";
-        values.firstName = value;
+        values.firstName = value.trim();
         break;
       case "lastName":
         errors.lastName = value.length < 1 ? "Last Name is required!" : "";
-        values.lastName = value;
+        values.lastName = value.trim();
         break;
       case "email":
         errors.email = validEmailRegex.test(value) ? "" : "Email is not valid!";
-        values.email = value;
+        values.email = value.toLowerCase();
         break;
       case "password":
         errors.password =
@@ -124,10 +124,10 @@ const Auth = () => {
         break;
       case "nameNGO":
         errors.nameNGO = value.length < 1 ? "Name of NGO is required!" : "";
-        values.nameNGO = value;
+        values.nameNGO = value.trim();
         break;
       case "descriptionNGO":
-        values.descriptionNGO = value;
+        values.descriptionNGO = value.trim();
         break;
       default:
         break;
@@ -379,32 +379,32 @@ const Auth = () => {
   const authSubmitHandler = async (event) => {
     event.preventDefault();
 
-    // try {
-    const formData = new FormData();
-    formData.append("email", validation.values.email);
-    formData.append("firstName", validation.values.firstName);
-    formData.append("lastName", validation.values.lastName);
-    formData.append("password", validation.values.password);
-    formData.append("nameNGO", validation.values.nameNGO);
-    formData.append("descriptionNGO", validation.values.descriptionNGO);
-    formData.append("date", selectedDate);
-    formData.append("image", formState.inputs.image.value);
-    formData.append("type", value);
+    try {
+      const formData = new FormData();
+      formData.append("email", validation.values.email);
+      formData.append("firstName", validation.values.firstName);
+      formData.append("lastName", validation.values.lastName);
+      formData.append("password", validation.values.password);
+      formData.append("nameNGO", validation.values.nameNGO);
+      formData.append("descriptionNGO", validation.values.descriptionNGO);
+      formData.append("date", selectedDate);
+      formData.append("image", formState.inputs.image.value);
+      formData.append("type", value);
 
-    for (var pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
+      for (var pair of formData.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+      }
+
+      const responseData = await sendRequest(
+        `${Path}api/users/signup`,
+        "POST",
+        formData
+      );
+
+      auth.login(responseData.userId, responseData.token, responseData.type);
+    } catch (err) {
+      console.log("error: " + err);
     }
-
-    const responseData = await sendRequest(
-      `${Path}api/users/signup`,
-      "POST",
-      formData
-    );
-
-    auth.login(responseData.userId, responseData.token, responseData.type);
-    // } catch (err) {
-    //   console.log("error: " + err);
-    // }
   };
 
   return (

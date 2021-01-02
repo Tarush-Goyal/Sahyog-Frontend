@@ -152,31 +152,31 @@ const DonationForm = () => {
     switch (name) {
       case "itemName":
         errors.itemName = value.length < 1 ? "Item Name is required!" : "";
-        values.itemName = value;
+        values.itemName = value.trim();
         break;
       case "street":
         errors.street = value.length < 1 ? "Street/Locality is required!" : "";
-        values.street = value;
+        values.street = value.trim();
         break;
       case "city":
         errors.city = value.length < 1 ? "City is required!" : "";
-        values.city = value;
+        values.city = value.trim();
         break;
       case "state":
         errors.state = value.length < 1 ? "State is required!" : "";
-        values.state = value;
+        values.state = value.trim();
         break;
       case "house":
         errors.house = value.length < 1 ? "House no is required!" : "";
-        values.house = value;
+        values.house = value.trim();
         break;
       case "landmark":
         errors.landmark = value.length < 1 ? "Landmark is required!" : "";
-        values.landmark = value;
+        values.landmark = value.trim();
         break;
       case "pincode":
         errors.pincode = value.length < 1 ? "Pincode is required!" : "";
-        values.pincode = value;
+        values.pincode = value.trim();
         break;
       default:
         break;
@@ -256,7 +256,6 @@ const DonationForm = () => {
       );
       console.log("Success");
       history.push("/");
-      // auth.login(responseData.userId, responseData.token);
     } catch (err) {
       console.log("error: " + err);
     }
