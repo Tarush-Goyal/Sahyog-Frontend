@@ -11,7 +11,7 @@ import ImageUpload from "../../shared/components/FormElements/ImageUpload";
 import { useForm } from "../../shared/hooks/form-hook";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 import { AuthContext } from "../../shared/context/auth-context";
-import "./Auth.css";
+import "./Signup.css";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -55,7 +55,7 @@ function getSteps() {
   return ["Select Type of User", "Fill Details"];
 }
 
-const Auth = () => {
+const Signup = () => {
   const classes = useStyles();
   const classes2 = useStyles2();
 
@@ -457,4 +457,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default Signup;

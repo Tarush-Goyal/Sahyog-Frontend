@@ -5,23 +5,17 @@ import {
   Redirect,
   Switch,
 } from "react-router-dom";
-
-import DonationsTable from "./volunteer/components/DonationsTable";
-import Donations from "./user/pages/Donations";
-import Users from "./user/pages/Users";
-// import NewPlace from "./places/pages/NewPlace";
-// import UserPlaces from "./places/pages/UserPlaces";
-// import UpdatePlace from "./places/pages/UpdatePlace";
-import Auth from "./user/pages/Auth";
-import SimpleTabs from "./shared/components/material-ui/SimpleTabs";
-import MainNavigation from "./shared/components/Navigation/MainNavigation";
+import DonationsTable from "./volunteer/pages/ActiveDonations";
+import DonationsTemplate from "./user/pages/DonationsTemplate";
+import SimpleTabs from "./user/components/SimpleTabs";
+import MainHeader from "./shared/components/Navigation/MainHeader";
 import { AuthContext } from "./shared/context/auth-context";
 import { useAuth } from "./shared/hooks/auth-hook";
-import Leaderboard from "./user/pages/Leaderboard";
+import UserLeaderboard from "./user/pages/Leaderboard";
 import Inventory from "./ngoHead/pages/Inventory";
 import Status from "./user/pages/Status";
 import DonationsStatus from "./volunteer/pages/DonationsStatus";
-import VolunteerLeaderboard from "./volunteer/pages/VolunteerLeaderboard";
+import VolunteerLeaderboard from "./volunteer/pages/Leaderboard";
 import NGOVolunteerDetails from "./ngoHead/pages/NGOVolunteerDetails";
 
 const App = () => {
@@ -33,21 +27,14 @@ const App = () => {
     routes = (
       <Switch>
         <Route path='/donations' exact>
-          <Donations></Donations>
+          <DonationsTemplate></DonationsTemplate>
         </Route>
         <Route path='/leaderboard' exact>
-          {/* <h1>leaderboard</h1> */}
-          <Leaderboard></Leaderboard>
+          <UserLeaderboard></UserLeaderboard>
         </Route>
-
-        {/* <Route path='/users' exact>
-          <Users />
-        </Route> */}
-
         <Route path='/status/:id' exact>
           <Status></Status>
         </Route>
-
         <Redirect to='/leaderboard' />
       </Switch>
     );
@@ -105,7 +92,7 @@ const App = () => {
         logout: logout,
       }}>
       <Router>
-        <MainNavigation />
+        <MainHeader />
         <main>{routes}</main>
       </Router>
     </AuthContext.Provider>

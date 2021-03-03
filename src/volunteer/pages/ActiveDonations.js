@@ -27,7 +27,7 @@ const useStyles = makeStyles({
   },
 });
 
-const DonationsTable = () => {
+const ActiveDonations = () => {
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
@@ -65,9 +65,9 @@ const DonationsTable = () => {
   const handleClose = (status) => {
     setOpen(false);
     if (status == true) {
-      // console.log(requests[currentIndex]);
       authSubmitHandler();
-      history.push("/leaderboard");
+      history.push(`/leaderboard/${userId}`);
+      console.log(userId);
     }
   };
 
@@ -97,7 +97,7 @@ const DonationsTable = () => {
             " " +
             data.address.state,
         }));
-        // console.log(responseData.items);
+
         setActiveRequests(result);
       } catch (err) {}
     };
@@ -186,4 +186,4 @@ const DonationsTable = () => {
   );
 };
 
-export default DonationsTable;
+export default ActiveDonations;

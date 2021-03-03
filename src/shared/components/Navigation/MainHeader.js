@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { AuthContext } from "../../context/auth-context";
 import Box from "@material-ui/core/Box";
-import SimpleMenu from "../../../shared/components/material-ui/SimpleMenu";
+import VolunteerRequests from "../../../ngoHead/components/VolunteerRequests";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,7 +67,7 @@ const MainHeader = () => {
           )}
           {auth.type === "head" && (
             <Box display='flex' flexDirection='row'>
-              <SimpleMenu id={auth.userId}></SimpleMenu>
+              <VolunteerRequests id={auth.userId}></VolunteerRequests>
               <Button
                 color='inherit'
                 onClick={() => {

@@ -2,14 +2,12 @@ import React, { useEffect, useState, useContext } from "react";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
-import makeStyles from "@material-ui/core/styles";
-import SimpleList from "../../shared/components/material-ui/SimpleList";
-import SimplePaper from "../../shared/components/material-ui/SimplePaper";
 import { useParams, useHistory } from "react-router-dom";
 import Path from "../../shared/Path";
 import VolunteerList from "../components/VolunteerList";
+import SimplePaper from "../../shared/components/material-ui/SimplePaper";
 
-const VolunteerLeaderboard = () => {
+const Leaderboard = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [loadedUsers, setLoadedUsers] = useState();
   const id = useParams().id;
@@ -46,12 +44,10 @@ const VolunteerLeaderboard = () => {
         </div>
       )}
       {!isLoading && loadedUsers && (
-        //
         <VolunteerList items={loadedUsers}></VolunteerList>
-        // </Box>
       )}
     </React.Fragment>
   );
 };
 
-export default VolunteerLeaderboard;
+export default Leaderboard;

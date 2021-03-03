@@ -10,7 +10,7 @@ import Alert from "@material-ui/lab/Alert";
 import { AuthContext } from "../../shared/context/auth-context";
 import DonationForm from "./DonationForm.js";
 import "./Login.css";
-import "./Donations.css";
+import "./DonationsTemplate.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Donations = () => {
+const DonationsTemplate = () => {
   const classes = useStyles();
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -73,4 +73,4 @@ const Donations = () => {
   );
 };
 
-export default Donations;
+export default DonationsTemplate;
