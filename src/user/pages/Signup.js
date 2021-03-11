@@ -25,6 +25,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Box from "@material-ui/core/Box";
 import Path from "../../shared/Path";
+import axios from "axios";
 
 const useStyles2 = makeStyles((theme) => ({
   root: {
@@ -159,6 +160,7 @@ const Signup = () => {
   const [value, setValue] = React.useState("homeowner");
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const [imageFile, setImageFile] = useState(null);
   const handleChange = (event) => {
     setValue(event.target.value);
     setUser((user1 = event.target.value));
@@ -354,7 +356,12 @@ const Signup = () => {
                 name='image'
                 errorText='Please provide a profile picture'
                 style={{ width: "100%" }}
-                onInput={inputHandler}
+                onInput={(id, file, valid) => {
+                  console.log(file);
+                  setImageFile(file);
+                  inputHandler(id, file, valid);
+                }}
+                // onInput={inputHandler}
                 updateImage={(event) => {
                   imageChange();
                 }}
@@ -378,6 +385,22 @@ const Signup = () => {
 
   const authSubmitHandler = async (event) => {
     event.preventDefault();
+
+    try {
+      const data = new FormData();
+      data.append("file", imageFile);
+      // console.log(sel/ectedFile);
+      axios
+        .post(`${Path}api/users/upload`, data, {
+          // receive two parameter endpoint url ,form data
+        })
+        .then((res) => {
+          // then print response status
+          console.log(res.statusText);
+        });
+    } catch (err) {
+      console.log(err);
+    }
 
     try {
       const formData = new FormData();
