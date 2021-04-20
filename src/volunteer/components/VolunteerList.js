@@ -30,7 +30,7 @@ const UsersList = (props) => {
                 <UserItem
                   key={user.id}
                   id={user.id}
-                  image={user.image}
+                  image={`api/uploads/singleimage/${user.imageGrid}`}
                   name={user.name}
                   itemCount={user.donationAccepted.length}
                   text='Picked up Donation'

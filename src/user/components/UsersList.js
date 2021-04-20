@@ -4,8 +4,9 @@ import UserItem from "./UserItem";
 import Card from "../../shared/components/UIElements/Card";
 import "./UsersList.css";
 import Box from "@material-ui/core/Box";
-
+import Path from "../../shared/Path";
 const UsersList = (props) => {
+  console.log(props);
   if (props.items.length === 0) {
     return (
       <div className='center'>
@@ -30,7 +31,7 @@ const UsersList = (props) => {
                 <UserItem
                   key={user.id}
                   id={user.id}
-                  image={user.image}
+                  image={`api/uploads/singleimage/${user.imageGrid}`}
                   name={user.name}
                   itemCount={user.items.length}
                   text='Donation'

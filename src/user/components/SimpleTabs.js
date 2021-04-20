@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     width: "100%",
+    height: "100%",
     // backgroundColor: theme.palette.background.paper,
   },
   //   rootCard: {
@@ -64,28 +65,30 @@ export default function SimpleTabs() {
 
   return (
     <div className={classes.root}>
-      <Card className='authentication'>
-        <AppBar position='static'>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label='simple tabs example'
-            variant='fullWidth'>
-            <Tab label='Login' {...a11yProps(0)} />
-            <Tab
-              label='Signup'
-              style={{ paddingLeft: 0, paddingRight: 0 }}
-              {...a11yProps(1)}
-            />
-          </Tabs>
-        </AppBar>
-        <TabPanel value={value} index={0}>
-          <Login></Login>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <Signup></Signup>
-        </TabPanel>
-      </Card>
+      <div className='bgImg'>
+        <Card className='authentication'>
+          <AppBar position='static'>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label='simple tabs example'
+              variant='fullWidth'>
+              <Tab label='Login' {...a11yProps(0)} />
+              <Tab
+                label='Signup'
+                style={{ paddingLeft: 0, paddingRight: 0 }}
+                {...a11yProps(1)}
+              />
+            </Tabs>
+          </AppBar>
+          <TabPanel value={value} index={0}>
+            <Login></Login>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <Signup></Signup>
+          </TabPanel>
+        </Card>
+      </div>
     </div>
   );
 }

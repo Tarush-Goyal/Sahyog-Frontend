@@ -11,15 +11,12 @@ import SimplePaper from "../../shared/components/material-ui/SimplePaper";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import { useHttpClient } from "../../shared/hooks/http-hook";
-
-import Button from "@material-ui/core/Button";
 import { useAuth } from "../../shared/hooks/auth-hook";
 import Path from "../../shared/Path";
 import { useParams, useHistory } from "react-router-dom";
 import Card from "@material-ui/core/Card";
 import Box from "@material-ui/core/Box";
 import CardContent from "@material-ui/core/CardContent";
-import IconButton from "@material-ui/core/IconButton";
 import Avatar from "@material-ui/core/Avatar";
 
 const useStyles = makeStyles({
@@ -29,14 +26,9 @@ const useStyles = makeStyles({
 });
 
 const NGOVolunteerDetails = () => {
-  const history = useHistory();
-  const [open, setOpen] = React.useState(false);
   const classes = useStyles();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [volunteers, setVolunteers] = useState();
-  const [currentIndex, setIndex] = useState(0);
-  const [dialogName, setDialogName] = useState("");
-  const { token, login, logout, userId, type } = useAuth();
   const id = useParams().id;
 
   useEffect(() => {
@@ -94,8 +86,7 @@ const NGOVolunteerDetails = () => {
                                 justifyContent='center'>
                                 <Avatar
                                   alt={volunteer.name}
-                                  // src='http://localhost:5000/uploads/images/f3749080-3a41-11eb-a1ed-d35c112b1685.jpeg'
-                                  src={`${Path}${volunteer.image}`}
+                                  src={`${Path}api/uploads/singleimage/${volunteer.imageGrid}`}
                                 />
                               </Box>
                             </TableCell>

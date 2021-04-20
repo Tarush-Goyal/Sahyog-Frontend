@@ -8,6 +8,11 @@ import Typography from "@material-ui/core/Typography";
 import Path from "../../shared/Path";
 
 class VolunteerID extends React.PureComponent {
+  componentDidMount() {
+    console.log("Mounted");
+    console.log(this.props);
+  }
+
   render() {
     return (
       <Card style={{ padding: "2rem", maxWidth: 345 }}>
@@ -15,10 +20,13 @@ class VolunteerID extends React.PureComponent {
           title={this.props.data.name}
           subheader={this.props.data.email}
         />
+        <img
+          style={{ display: "none" }}
+          src={`${Path}api/uploads/singleimage/${this.props.data.imageGrid}`}
+        />
         <CardMedia
           style={{ height: 0, paddingTop: "56.25%" }}
-          image={Path + this.props.data.image}
-          title='Paella dish'
+          image={`${Path}api/uploads/singleimage/${this.props.data.imageGrid}`}
         />
         <CardContent>
           <Typography variant='body1' color='textSecondary' component='p'>

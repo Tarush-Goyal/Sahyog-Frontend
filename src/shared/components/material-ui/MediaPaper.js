@@ -7,14 +7,10 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Collapse from "@material-ui/core/Collapse";
-import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { red } from "@material-ui/core/colors";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import AddIcon from "@material-ui/icons/Add";
 import { green } from "@material-ui/core/colors";
 import RemoveIcon from "@material-ui/icons/Remove";
@@ -24,7 +20,7 @@ import Path from "../../Path";
 import { useHttpClient } from "../../../shared/hooks/http-hook";
 import { useAuth } from "../../../shared/hooks/auth-hook";
 import Box from "@material-ui/core/Box";
-import { useParams, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,10 +50,9 @@ const MediaPaper = (props) => {
   const classes = useStyles();
   const [donation, setDonation] = useState([...props.items]);
   const [expanded, setExpanded] = React.useState(false);
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const { token, login, logout, userId, type } = useAuth();
+  const { sendRequest } = useHttpClient();
+  const { userId } = useAuth();
   const [originalQuantity, setOriginalQuantity] = useState();
-  // const [id, setId] = useState();
   const history = useHistory();
 
   useEffect(() => {
@@ -76,7 +71,6 @@ const MediaPaper = (props) => {
   };
 
   const submitQuantity = async (index) => {
-    // setId(userId);
     console.log(donation[index]);
     try {
       const responseData = await sendRequest(
@@ -121,7 +115,6 @@ const MediaPaper = (props) => {
           flexWrap='wrap'
           justifyContent='center'
           alignItems='flex-start'>
-          {/* // <Box> */}
           {donation.map((item, index) => (
             <Card className={classes.root}>
               <CardHeader
@@ -130,7 +123,8 @@ const MediaPaper = (props) => {
               />
               <CardMedia
                 className={classes.media}
-                image={Path + item.image}
+                image={`${Path}api/uploads/singleimage/${item.imageGrid}`}
+                // image={Path + item.image}
                 title='Paella dish' //name
               />
               <CardContent>

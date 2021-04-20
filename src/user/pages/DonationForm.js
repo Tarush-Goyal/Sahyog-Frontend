@@ -27,6 +27,7 @@ import Grid from "@material-ui/core/Grid";
 import Slider from "@material-ui/core/Slider";
 import Input from "@material-ui/core/Input";
 import Path from "../../shared/Path";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,6 +85,7 @@ const DonationForm = () => {
 
   const [formValid, setFormValid] = useState(false);
   const [imageValid, setImageValid] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
   const [validation, setValidation] = useState({
     errors: {
       itemName: "",
@@ -230,6 +232,7 @@ const DonationForm = () => {
   );
 
   const authSubmitHandler = async (event) => {
+    console.log("image:" + imageFile.name);
     let id = "";
     event.preventDefault();
     try {
@@ -245,6 +248,7 @@ const DonationForm = () => {
       formData.append("house", validation.values.house);
       formData.append("date", selectedDate);
       formData.append("image", formState.inputs.image.value);
+      formData.append("imageGrid", imageFile.name);
       console.log(formData);
       const responseData = await sendRequest(
         `${Path}api/homeowner/donateItem`,
@@ -258,6 +262,16 @@ const DonationForm = () => {
       history.push("/");
     } catch (err) {
       console.log("error: " + err);
+    }
+
+    try {
+      const data = new FormData();
+      data.append("file", imageFile);
+      axios.post(`${Path}api/uploads/storeimage`, data, {}).then((res) => {
+        console.log(res.statusText);
+      });
+    } catch (err) {
+      console.log(err);
     }
     // }
   };
@@ -411,11 +425,17 @@ const DonationForm = () => {
               justifyContent='space-around'
               m={1}>
               <ImageUpload
-                id='image'
                 center
+                id='image'
                 name='image'
-                errorText='Please provide picture of item'
-                onInput={inputHandler}
+                errorText='Please provide a profile picture'
+                style={{ width: "100%" }}
+                onInput={(id, file, valid) => {
+                  console.log(file);
+                  setImageFile(file);
+                  inputHandler(id, file, valid);
+                }}
+                // onInput={inputHandler}
                 updateImage={(event) => {
                   imageChange();
                 }}

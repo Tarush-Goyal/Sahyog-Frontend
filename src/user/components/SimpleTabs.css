@@ -1,6 +1,19 @@
 .authentication {
-  width: 90%;
-  max-width: 35rem;
-  margin: 7rem auto;
-  text-align: center;
+  z-index: 2;
+  min-width: 35rem;
+  overflow-y: scroll;
+  height: min-content;
+  max-height: 80%;
+}
+.bgImg {
+  background-image: url("https://c0.wallpaperflare.com/preview/287/860/54/team-ethnicity-group-hands.jpg");
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  align-items: center;
+  z-index: 0;
 }

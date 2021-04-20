@@ -1,31 +1,18 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useHttpClient } from "../../shared/hooks/http-hook";
-import Button from "@material-ui/core/Button";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
-import makeStyles from "@material-ui/core/styles";
 import SimplePaper from "../../shared/components/material-ui/SimplePaper";
 import MediaPaper from "../../shared/components/material-ui/MediaPaper";
 import Box from "@material-ui/core/Box";
-import { useAuth } from "../../shared/hooks/auth-hook";
 import Path from "../../shared/Path";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import TrieSearch from "trie-search";
 import SearchIcon from "@material-ui/icons/Search";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
-// import Box from "@material-ui/core/Box";
-// var TrieSearch = require("trie-search");
-
-var arr = [
-  { name: "andrew", age: 21 },
-  { name: "andy", age: 37 },
-  { name: "andrea", age: 25 },
-  { name: "annette", age: 67 },
-];
 
 const Inventory = () => {
-  // const { token, login, logout, userId, type } = useAuth();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [inventory, setInventory] = useState();
   const [inventory2, setInventory2] = useState();
@@ -36,7 +23,6 @@ const Inventory = () => {
     if (event.key === "Enter") {
       ts.addAll(inventory);
       setInventory(inventory2);
-      // console.log(ts.get("c"));
       setInventory(ts.get(event.target.value));
     } else {
       setInventory(inventory2);

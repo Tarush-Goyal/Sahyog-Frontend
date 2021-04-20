@@ -385,22 +385,7 @@ const Signup = () => {
 
   const authSubmitHandler = async (event) => {
     event.preventDefault();
-
-    try {
-      const data = new FormData();
-      data.append("file", imageFile);
-      // console.log(sel/ectedFile);
-      axios
-        .post(`${Path}api/users/upload`, data, {
-          // receive two parameter endpoint url ,form data
-        })
-        .then((res) => {
-          // then print response status
-          console.log(res.statusText);
-        });
-    } catch (err) {
-      console.log(err);
-    }
+    let userId;
 
     try {
       const formData = new FormData();
@@ -413,6 +398,7 @@ const Signup = () => {
       formData.append("date", selectedDate);
       formData.append("image", formState.inputs.image.value);
       formData.append("type", value);
+      formData.append("imageGrid", imageFile.name);
 
       for (var pair of formData.entries()) {
         console.log(pair[0] + ", " + pair[1]);
@@ -427,6 +413,16 @@ const Signup = () => {
       auth.login(responseData.userId, responseData.token, responseData.type);
     } catch (err) {
       console.log("error: " + err);
+    }
+
+    try {
+      const data = new FormData();
+      data.append("file", imageFile);
+      axios.post(`${Path}api/uploads/storeimage`, data, {}).then((res) => {
+        console.log(res.statusText);
+      });
+    } catch (err) {
+      console.log(err);
     }
   };
 
