@@ -17,6 +17,7 @@ import Status from "./user/pages/Status";
 import DonationsStatus from "./volunteer/pages/DonationsStatus";
 import VolunteerLeaderboard from "./volunteer/pages/Leaderboard";
 import NGOVolunteerDetails from "./ngoHead/pages/NGOVolunteerDetails";
+import CreateFundraiser from "./shared/components/fundraiser/CreateFundraiser";
 
 const App = () => {
   const { token, login, logout, userId, type } = useAuth();
@@ -26,6 +27,12 @@ const App = () => {
   if (token && type === "homeowner") {
     routes = (
       <Switch>
+        <Route path='/fundraiser' exact>
+          <h1>fundraiser</h1>
+        </Route>
+        <Route path='/createfundraiser' exact>
+          <CreateFundraiser></CreateFundraiser>
+        </Route>
         <Route path='/donations' exact>
           <DonationsTemplate></DonationsTemplate>
         </Route>
@@ -41,12 +48,16 @@ const App = () => {
   } else if (token && userId && type === "head") {
     routes = (
       <Switch>
+        <Route path='/fundraiser' exact>
+          <h1>fundraiser</h1>
+        </Route>
+        <Route path='/createfundraiser' exact>
+          <CreateFundraiser></CreateFundraiser>
+        </Route>
         <Route path='/inventory/:id' exact>
-          {/* <h1>inventory</h1> */}
           <Inventory></Inventory>
         </Route>
         <Route path='/volunteers/:id' exact>
-          {/* <h1>volunteers</h1> */}
           <NGOVolunteerDetails></NGOVolunteerDetails>
         </Route>
         <Redirect to={"/inventory/" + userId} />
@@ -57,6 +68,12 @@ const App = () => {
   if (token && type === "volunteer") {
     routes = (
       <Switch>
+        <Route path='/fundraiser' exact>
+          <h1>fundraiser</h1>
+        </Route>
+        <Route path='/createfundraiser' exact>
+          <CreateFundraiser></CreateFundraiser>
+        </Route>
         <Route path='/requests' exact>
           <DonationsTable></DonationsTable>
         </Route>
@@ -65,7 +82,6 @@ const App = () => {
         </Route>
         <Route path='/leaderboard/:id' exact>
           <VolunteerLeaderboard></VolunteerLeaderboard>
-          {/* <h1>leaderboard</h1> */}
         </Route>
         <Redirect to='/requests' />
       </Switch>

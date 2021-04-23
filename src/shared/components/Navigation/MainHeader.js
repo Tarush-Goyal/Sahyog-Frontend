@@ -13,7 +13,6 @@ import VolunteerRequests from "../../../ngoHead/components/VolunteerRequests";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    // backgroundColor: '#2196F3'
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -44,6 +43,20 @@ const MainHeader = () => {
               <Button
                 color='inherit'
                 onClick={() => {
+                  navigateTo("/createfundraiser");
+                }}>
+                Create Fundraiser
+              </Button>
+              <Button
+                color='inherit'
+                onClick={() => {
+                  navigateTo("/fundraiser");
+                }}>
+                Active Fundraisers
+              </Button>
+              <Button
+                color='inherit'
+                onClick={() => {
                   navigateTo("/donations");
                 }}>
                 Donate
@@ -67,6 +80,20 @@ const MainHeader = () => {
           )}
           {auth.type === "head" && (
             <Box display='flex' flexDirection='row'>
+              <Button
+                color='inherit'
+                onClick={() => {
+                  navigateTo("/createfundraiser");
+                }}>
+                Create Fundraiser
+              </Button>
+              <Button
+                color='inherit'
+                onClick={() => {
+                  navigateTo("/fundraiser");
+                }}>
+                Active Fundraisers
+              </Button>
               <VolunteerRequests id={auth.userId}></VolunteerRequests>
               <Button
                 color='inherit'
@@ -86,6 +113,20 @@ const MainHeader = () => {
           )}
           {auth.type === "volunteer" && (
             <Box>
+              <Button
+                color='inherit'
+                onClick={() => {
+                  navigateTo("/createfundraiser");
+                }}>
+                Create Fundraiser
+              </Button>
+              <Button
+                color='inherit'
+                onClick={() => {
+                  navigateTo("/fundraiser");
+                }}>
+                Active Fundraisers
+              </Button>
               <Button
                 color='inherit'
                 onClick={() => {
