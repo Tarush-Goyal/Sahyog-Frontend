@@ -18,6 +18,7 @@ import DonationsStatus from "./volunteer/pages/DonationsStatus";
 import VolunteerLeaderboard from "./volunteer/pages/Leaderboard";
 import NGOVolunteerDetails from "./ngoHead/pages/NGOVolunteerDetails";
 import CreateFundraiser from "./shared/components/fundraiser/CreateFundraiser";
+import FundraiserCard from "./shared/components/fundraiser/FundraiserCard";
 
 const App = () => {
   const { token, login, logout, userId, type } = useAuth();
@@ -28,7 +29,7 @@ const App = () => {
     routes = (
       <Switch>
         <Route path='/fundraiser' exact>
-          <h1>fundraiser</h1>
+          <FundraiserCard></FundraiserCard>
         </Route>
         <Route path='/createfundraiser' exact>
           <CreateFundraiser></CreateFundraiser>
@@ -49,7 +50,7 @@ const App = () => {
     routes = (
       <Switch>
         <Route path='/fundraiser' exact>
-          <h1>fundraiser</h1>
+          <FundraiserCard></FundraiserCard>
         </Route>
         <Route path='/createfundraiser' exact>
           <CreateFundraiser></CreateFundraiser>
@@ -69,7 +70,7 @@ const App = () => {
     routes = (
       <Switch>
         <Route path='/fundraiser' exact>
-          <h1>fundraiser</h1>
+          <FundraiserCard></FundraiserCard>
         </Route>
         <Route path='/createfundraiser' exact>
           <CreateFundraiser></CreateFundraiser>
