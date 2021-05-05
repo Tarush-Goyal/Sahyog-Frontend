@@ -8,6 +8,10 @@ import "./Login.css";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { AuthContext } from "../../shared/context/auth-context";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import IconButton from "@material-ui/core/IconButton";
 import Path from "../../shared/Path";
 
 const useStyles = makeStyles((theme) => ({
@@ -19,6 +23,7 @@ const Login = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formValid, setFormValid] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [validation, setValidation] = useState({
     errors: {
       email: "",
@@ -128,15 +133,28 @@ const Login = () => {
               justifyContent='space-around'
               m={1}>
               <TextField
+                type={showPassword ? "text" : "password"}
                 id='password'
                 name='password'
-                type='password'
+                // type='password'
                 label='Password'
                 error={validation.errors.password.length > 0}
                 helperText={validation.errors.password}
                 onBlur={handleFormChange}
                 onChange={handleFormChange}
                 style={{ width: "15rem" }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <IconButton
+                        onClick={() => {
+                          setShowPassword(!showPassword);
+                        }}>
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Box>
             <Box m={3}>

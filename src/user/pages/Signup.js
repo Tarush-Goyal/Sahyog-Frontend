@@ -1,20 +1,23 @@
 import "date-fns";
-import React, { useState, useContext } from "react";
+//⚠️
+import React, { useEffect, useState, useContext } from "react";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner";
 import ImageUpload from "../../shared/components/FormElements/ImageUpload";
 import { useForm } from "../../shared/hooks/form-hook";
-import { useHttpClient } from "../../shared/hooks/http-hook";
+import IconButton from "@material-ui/core/IconButton";
 import { AuthContext } from "../../shared/context/auth-context";
 import "./Signup.css";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import InputLabel from "@material-ui/core/InputLabel";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -23,9 +26,13 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Box from "@material-ui/core/Box";
 import Path from "../../shared/Path";
 import axios from "axios";
+import { useHttpClient } from "../../shared/hooks/http-hook";
+import Input from "@material-ui/core/Input";
 
 const useStyles2 = makeStyles((theme) => ({
   root: {
@@ -59,10 +66,11 @@ function getSteps() {
 const Signup = () => {
   const classes = useStyles();
   const classes2 = useStyles2();
-
+  // const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formValid, setFormValid] = useState(false);
   const [activeStep, setActiveStep] = React.useState(0);
   const [imageValid, setImageValid] = useState(false);
+  const [symbol, setSymbol] = useState(true);
   const [validation, setValidation] = useState({
     errors: {
       firstName: "",
@@ -95,6 +103,35 @@ const Signup = () => {
       setFormValid(false);
     }
   };
+  const handleEmailChange = (value) => {
+    let error = false;
+
+    emails.every((email) => {
+      if (value == email.email) {
+        error = true;
+        return false;
+      } else {
+        return true;
+      }
+    });
+    return error;
+  };
+
+  const handleNgoChange = (value) => {
+    if (user1 == "volunteer") {
+      return false;
+    }
+    let error = false;
+    ngos.every((ngo) => {
+      if (value == ngo.nameNGO) {
+        error = true;
+        return false;
+      } else {
+        return true;
+      }
+    });
+    return error;
+  };
 
   const handleFormChange = (event) => {
     event.preventDefault();
@@ -115,8 +152,16 @@ const Signup = () => {
         values.lastName = value.trim();
         break;
       case "email":
-        errors.email = validEmailRegex.test(value) ? "" : "Email is not valid!";
         values.email = value.toLowerCase();
+        if (value.length == 0) {
+          errors.email = "Email is required!";
+        } else if (handleEmailChange(value.toLowerCase())) {
+          errors.email = "Email already exists!";
+        } else if (!validEmailRegex.test(value)) {
+          errors.email = "Email is not valid!";
+        } else {
+          errors.email = "";
+        }
         break;
       case "password":
         errors.password =
@@ -124,7 +169,15 @@ const Signup = () => {
         values.password = value;
         break;
       case "nameNGO":
-        errors.nameNGO = value.length < 1 ? "Name of NGO is required!" : "";
+        console.log("entered");
+        if (value.length == 0) {
+          errors.nameNGO = "Name of NGO is required!";
+        } else if (handleNgoChange(value)) {
+          errors.nameNGO = "NGO already exists!";
+        } else {
+          errors.nameNGO = "";
+        }
+        // errors.nameNGO = value.length < 1 ? "Name of NGO is required!" : "";
         values.nameNGO = value.trim();
         break;
       case "descriptionNGO":
@@ -154,13 +207,14 @@ const Signup = () => {
 
   const steps = getSteps();
   const auth = useContext(AuthContext);
-  const [isLoginMode, setIsLoginMode] = useState(false);
   let [user1, setUser] = useState("homeowner");
-
+  const [emails, setEmails] = useState([]);
   const [value, setValue] = React.useState("homeowner");
   const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [showPassword, setShowPassword] = useState(false);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [imageFile, setImageFile] = useState(null);
+  const [ngos, setNgos] = useState([]);
   const handleChange = (event) => {
     setValue(event.target.value);
     setUser((user1 = event.target.value));
@@ -286,16 +340,29 @@ const Signup = () => {
                   onChange={handleFormChange}
                   style={{ width: "10rem" }}
                 />
+
                 <TextField
+                  type={showPassword ? "text" : "password"}
                   id='password'
                   name='password'
-                  type='password'
                   label='Password'
                   error={validation.errors.password.length > 0}
                   helperText={validation.errors.password}
                   onBlur={handleFormChange}
                   onChange={handleFormChange}
                   style={{ width: "10rem" }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position='end'>
+                        <IconButton
+                          onClick={() => {
+                            setShowPassword(!showPassword);
+                          }}>
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Box>
               <Box
@@ -382,6 +449,28 @@ const Signup = () => {
         return "Unknown stepIndex";
     }
   };
+
+  useEffect(() => {
+    const ngoNames = async () => {
+      try {
+        const responseData = await sendRequest(`${Path}api/users/ngos`);
+        setNgos(responseData.ngos);
+        console.log(responseData);
+      } catch (err) {}
+    };
+    ngoNames();
+  }, [sendRequest]);
+
+  useEffect(() => {
+    const users = async () => {
+      try {
+        const responseData = await sendRequest(`${Path}api/users/emails`);
+        setEmails(responseData.users);
+        console.log(responseData);
+      } catch (err) {}
+    };
+    users();
+  }, [sendRequest]);
 
   const authSubmitHandler = async (event) => {
     event.preventDefault();

@@ -30,7 +30,6 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Collapse from "@material-ui/core/Collapse";
 import Path from "../../shared/Path";
-import { useAuth } from "../../shared/hooks/auth-hook";
 
 const useStyles = makeStyles({
   table: {
@@ -40,12 +39,9 @@ const useStyles = makeStyles({
 
 const DonationsStatus = () => {
   const history = useHistory();
-  const { token, login, logout, userId, type } = useAuth();
   const [open2, setOpen2] = React.useState();
-  const [volunteerInfo, setVolunteerInfo] = React.useState();
   const [open, setOpen] = React.useState(false);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [value, setValue] = useState(false);
   const id = useParams().id;
   const [donations, setDonations] = useState();
   const classes = useStyles();
@@ -64,13 +60,11 @@ const DonationsStatus = () => {
     items[index] = item;
     // 5. Set the state to our new copy
     setDonations(items);
-    setValue(false);
   };
 
   const handleFormChange = (event) => {
     event.preventDefault();
-    const { value } = event.target;
-    setOTP(value);
+    setOTP(event.target.value);
   };
 
   const handleClickOpen2 = (index) => {

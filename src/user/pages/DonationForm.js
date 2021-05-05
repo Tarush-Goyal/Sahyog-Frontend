@@ -353,6 +353,7 @@ const DonationForm = () => {
                   <MenuItem value={"books"}>Books</MenuItem>
                   <MenuItem value={"food"}>Food</MenuItem>
                   <MenuItem value={"stationary"}>Stationary</MenuItem>
+                  <MenuItem value={"covid"}>Covid</MenuItem>
                 </Select>
                 <FormHelperText>{validation.errors.category}</FormHelperText>
               </FormControl>

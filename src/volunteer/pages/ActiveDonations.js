@@ -20,10 +20,18 @@ import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../shared/hooks/auth-hook";
 import Path from "../../shared/Path";
+import axios from "axios";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
+  },
+  formControl: {
+    minWidth: 120,
   },
 });
 
@@ -33,6 +41,8 @@ const ActiveDonations = () => {
   const classes = useStyles();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [requests, setActiveRequests] = useState([]);
+  const [originalRequests, setoriginalRequests] = useState([]);
+  const [filter, setFilter] = useState("default");
   const [currentIndex, setIndex] = useState(0);
   const [dialogName, setDialogName] = useState("");
   const { token, login, logout, userId, type } = useAuth();
@@ -50,15 +60,15 @@ const ActiveDonations = () => {
     data.volunteerId = userId;
     // console.log(data);
     try {
-      const responseData = await sendRequest(
-        `${Path}api/volunteer/acceptRequest`,
-        "POST",
-        JSON.stringify(data),
-        {
-          "Content-Type": "application/json",
-        }
-      );
-      console.log(responseData);
+      axios
+        .post(`${Path}api/volunteer/acceptRequest`, JSON.stringify(data), {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          console.log(res.statusText);
+        });
     } catch (err) {}
   };
 
@@ -70,6 +80,26 @@ const ActiveDonations = () => {
       console.log(userId);
     }
   };
+
+  const handleSelectChange = (event) => {
+    let value = event.target.value;
+    setFilter(value);
+  };
+
+  useEffect(() => {
+    const filterRequests = () => {
+      if (filter == "recommended") {
+        setoriginalRequests(requests);
+        let request = requests.filter((filter) => {
+          return filter.category == "clothes";
+        });
+        setActiveRequests(request);
+      } else {
+        setActiveRequests(originalRequests);
+      }
+    };
+    filterRequests();
+  }, [filter]);
 
   useEffect(() => {
     const activeDonations = async () => {
@@ -146,6 +176,15 @@ const ActiveDonations = () => {
             <LoadingSpinner />
           </div>
         )}
+
+        <FormControl className={classes.formControl} style={{ margin: "1rem" }}>
+          <InputLabel>Sort By</InputLabel>
+          <Select id='filter' value={filter} onChange={handleSelectChange}>
+            <MenuItem value={"default"}>Default</MenuItem>
+            <MenuItem value={"recommended"}>Recommended</MenuItem>
+          </Select>
+        </FormControl>
+
         {!isLoading && requests && (
           <Table className={classes.table} aria-label='simple table'>
             <TableHead>

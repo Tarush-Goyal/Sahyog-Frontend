@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
     margin: "25px",
   },
   media: {
-    height: 140,
+    height: 200,
   },
   button: {
     display: "flex",
