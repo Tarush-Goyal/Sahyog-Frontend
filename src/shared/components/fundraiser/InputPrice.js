@@ -78,7 +78,7 @@ function InputPrice(props) {
           />
           <StripeCheckout
             token={handlePayment}
-            stripeKey='pk_test_51IgnbRSEzonCch7wpM8MTTFXNQVU2ll3iLYZvBovrB3R6sOblAj9Xx1Zlzmf4v8LY6iPpcJ317CfqA00UF93E69j00eZmXQOjD'
+            stripeKey='pk_test_51IgnbRSEzonCch7wbc5UyQToSMGgJ1SIwYzXtND0xxCKTT3wHZ2amjPBa6zFmTkTobFLRcPYeNHAwdGc95pwONWk00Jn1PPrAF'
             name={props.fundraiser.name}
             amount={price * 100}
           />
