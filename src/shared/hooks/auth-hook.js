@@ -36,7 +36,9 @@ export const useAuth = () => {
   }, []);
 
   useEffect(() => {
+    console.log("use effect");
     if (token && tokenExpirationDate) {
+      //will run twice during login but will only go in if for 2nd useeffect (when expiration set)
       const remainingTime =
         tokenExpirationDate.getTime() - new Date().getTime();
       logoutTimer = setTimeout(logout, remainingTime);

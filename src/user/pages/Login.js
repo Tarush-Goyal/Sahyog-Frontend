@@ -13,6 +13,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import Path from "../../shared/Path";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -60,6 +61,18 @@ const Login = () => {
     } catch (err) {}
   };
 
+  const test = () => {
+    console.log("test");
+    axios
+      .post(`${Path}api/users/test`, { text: "hello" }, {})
+      .then((res) => {
+        console.log(res.statusText);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const handleFormChange = (event) => {
     event.preventDefault();
     setFormValid(true);
@@ -95,7 +108,7 @@ const Login = () => {
       <ErrorModal error={error} onClear={clearError} />
       {isLoading && <LoadingSpinner asOverlay />}
       <div className={classes.root}>
-        <h2>Login</h2>
+        <h2 onClick={test}>Login</h2>
         <hr></hr>
         <form
           onSubmit={authSubmitHandler}

@@ -124,7 +124,7 @@ const MediaPaper = (props) => {
               <CardMedia
                 className={classes.media}
                 image={`${Path}api/uploads/singleimage/${item.imageGrid}`}
-                title='Paella dish' //name
+                title='Donation item' //name
               />
               <CardContent>
                 <Typography

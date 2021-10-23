@@ -23,7 +23,7 @@ const Inventory = () => {
     if (event.key === "Enter") {
       ts.addAll(inventory);
       setInventory(inventory2);
-      setInventory(ts.get(event.target.value));
+      setInventory(ts.search(event.target.value));
     } else {
       setInventory(inventory2);
     }
@@ -38,8 +38,6 @@ const Inventory = () => {
         console.log(responseData.items);
         setInventory(responseData.items);
         setInventory2(responseData.items);
-
-        console.log(ts.get("c"));
       } catch (err) {}
     };
     fetchInventory();

@@ -33,6 +33,7 @@ const useStyles = makeStyles(() => ({
   },
   card: {
     minWidth: 345,
+    margin: "2rem",
   },
 }));
 
@@ -57,13 +58,13 @@ function FundraiserCard() {
 
   return (
     <>
+      <SimplePaper title='Active Fundraisers'></SimplePaper>
       <ErrorModal error={error} onClear={clearError} />
       {isLoading && (
         <div className='center'>
           <LoadingSpinner />
         </div>
       )}
-      <SimplePaper title='Active Fundraisers'></SimplePaper>
       {!isLoading && fundraisers && (
         <Box
           display='flex'

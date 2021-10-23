@@ -64,8 +64,7 @@ const Status = () => {
     content: () => componentRef.current,
   });
 
-  const generateID = (index) => {
-    const fetchVolunteer = async () => {
+  const generateID = async (index) => {
       try {
         const responseData = await sendRequest(
           `${Path}api/volunteer/volunteerId/${donations[index].assignedVolunteer}`
@@ -75,8 +74,6 @@ const Status = () => {
         setValue(true);
         handlePrint();
       } catch (err) {}
-    };
-    console.log(value);
   };
 
   useEffect(() => {

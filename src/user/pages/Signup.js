@@ -177,7 +177,6 @@ const Signup = () => {
         } else {
           errors.nameNGO = "";
         }
-        // errors.nameNGO = value.length < 1 ? "Name of NGO is required!" : "";
         values.nameNGO = value.trim();
         break;
       case "descriptionNGO":
@@ -428,7 +427,6 @@ const Signup = () => {
                   setImageFile(file);
                   inputHandler(id, file, valid);
                 }}
-                // onInput={inputHandler}
                 updateImage={(event) => {
                   imageChange();
                 }}

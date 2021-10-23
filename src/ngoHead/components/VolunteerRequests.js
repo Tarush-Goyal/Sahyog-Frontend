@@ -9,24 +9,44 @@ import CheckIcon from "@material-ui/icons/Check";
 import { green } from "@material-ui/core/colors";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
+import axios from "axios";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import Box from "@material-ui/core/Box";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 export default function VolunteerRequests(props) {
-  const [anchorEl, setAnchorEl] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [volunteers, setVolunteers] = React.useState();
+    const [open2, setOpen2] = React.useState();
 
   useEffect(() => {
-    const fetchVolunteers = async () => {
-      try {
-        const responseData = await sendRequest(
-          `${Path}api/ngohead/volunteersNotApproved/${props.id}`
-        );
+     const fetchVolunteers = async () => {
 
-        console.log(responseData.items);
-        setVolunteers(responseData.items);
-      } catch (err) {}
-    };
-    fetchVolunteers();
-  }, [sendRequest]);
+    await axios.get(`${Path}api/ngohead/volunteersNotApproved/${props.id}`,)
+          .then((response) => {
+            console.log(response.data.items);
+            setVolunteers(response.data.items);
+          }
+        );
+      }
+   fetchVolunteers();
+  }, []);
+
+  const handleClickOpen2 = () => {
+    setOpen2(true);
+
+  };
+
+  const handleClose2 = (status) => {
+    setOpen2(false);
+  };
 
   const handleClick = (event) => {
     console.log("clicked");
@@ -62,11 +82,75 @@ export default function VolunteerRequests(props) {
 
   return (
     <div>
+    <Dialog
+      open={open2}
+      onClose={handleClose2}
+      aria-labelledby='alert-dialog-title'
+      aria-describedby='alert-dialog-description'>
+      <DialogTitle id='alert-dialog-title2'>Volunteer Requests</DialogTitle>
+      <DialogContent>
+        <DialogContentText id='alert-dialog-description'>
+          {volunteers && (
+            <Box
+              display='flex'
+              flexDirection='column'
+              justifyContent='space-around'>
+              <Typography variant='subtitle2' gutterBottom>
+
+              </Typography>
+              <Typography variant='subtitle2' gutterBottom>
+              <List component="nav" aria-label="secondary mailbox folders">
+
+
+
+              {volunteers.map((volunteer, index) => (
+                <ListItem button onClick={()=>{console.log("clicked")}}>
+                  <ListItemText primary={volunteer.name} />
+                  <IconButton
+                    color='secondary'
+                    aria-label='cross'
+                    onClick={() => {
+                      handleVolunteerRequest(index, false);
+                    }}>
+                    <ClearIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label='tick'
+                    onClick={() => {
+                      handleVolunteerRequest(index, true);
+                    }}>
+                    <CheckIcon style={{ color: green[500] }} />
+                  </IconButton>
+                </ListItem>
+
+              ))}
+
+
+
+    </List>
+              </Typography>
+            </Box>
+          )}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => {
+            handleClose2(true);
+          }}
+          color='primary'>
+          OK
+        </Button>
+      </DialogActions>
+    </Dialog>
+        <div>
       <Button
         color='inherit'
         aria-controls='simple-menu'
         aria-haspopup='true'
-        onClick={handleClick}>
+        onClick={(e)=>{
+          handleClickOpen2();
+        }}>
         See Volunteer Requests
       </Button>
       {volunteers && (
@@ -105,7 +189,9 @@ export default function VolunteerRequests(props) {
             </MenuItem>
           ))}
         </Menu>
-      )}
+          )}
+        </div>
+
     </div>
   );
 }
