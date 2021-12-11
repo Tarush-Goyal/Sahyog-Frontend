@@ -232,7 +232,7 @@ const DonationsStatus = () => {
                 style={{ width: "68rem", margin: "2rem" }}>
                 <Table className={classes.table} aria-label='simple table'>
                   <TableHead>
-                    <TableRow>
+                    <TableRow hover>
                       <TableCell style={{ visibility: "hidden" }}>
                         <IconButton aria-label='expand row' size='small' />
                       </TableCell>

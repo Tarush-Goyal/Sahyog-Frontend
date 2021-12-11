@@ -38,6 +38,27 @@ const MainHeader = () => {
           <Typography variant='h4' className={classes.title}>
             SAHYOG
           </Typography>
+          {auth.type==='admin' && (
+            <Box>
+            <Button
+              color='inherit'
+              onClick={() => {
+                navigateTo("/createfundraiser");
+              }}>
+              Create Fundraiser
+            </Button>
+            <Button
+              color='inherit'
+              onClick={() => {
+                navigateTo("/fundraiser");
+              }}>
+              Active Fundraisers
+            </Button>
+            
+            </Box>
+          )}
+
+
           {auth.type === "homeowner" && (
             <Box>
               <Button

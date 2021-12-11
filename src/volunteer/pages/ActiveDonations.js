@@ -45,6 +45,7 @@ const ActiveDonations = () => {
   const [filter, setFilter] = useState("default");
   const [currentIndex, setIndex] = useState(0);
   const [dialogName, setDialogName] = useState("");
+  const [prefer,setPreferred] = useState();
   const { token, login, logout, userId, type } = useAuth();
 
   const handleClickOpen = (index) => {
@@ -91,7 +92,7 @@ const ActiveDonations = () => {
       if (filter == "recommended") {
         setoriginalRequests(requests);
         let request = requests.filter((filter) => {
-          return filter.category == "clothes";
+          return filter.category == prefer;
         });
         setActiveRequests(request);
       } else {
@@ -107,6 +108,15 @@ const ActiveDonations = () => {
         const responseData = await sendRequest(
           `${Path}api/volunteer/activeDonationRequest`
         );
+
+        const preferred = await sendRequest(
+          `${Path}api/admin/sendPreferred`
+        );
+
+        console.log(preferred.items);
+        setPreferred(preferred.items.preferred);
+
+
         let result = responseData.items.map((data) => ({
           _id: data._id,
           userId: data.userId,
@@ -188,7 +198,7 @@ const ActiveDonations = () => {
         {!isLoading && requests && (
           <Table className={classes.table} aria-label='simple table'>
             <TableHead>
-              <TableRow>
+              <TableRow hover>
                 <TableCell>Item Name</TableCell>
                 <TableCell align='right'>Category</TableCell>
                 <TableCell align='right'>Quantity</TableCell>

@@ -19,13 +19,36 @@ import VolunteerLeaderboard from "./volunteer/pages/Leaderboard";
 import NGOVolunteerDetails from "./ngoHead/pages/NGOVolunteerDetails";
 import CreateFundraiser from "./shared/components/fundraiser/CreateFundraiser";
 import FundraiserCard from "./shared/components/fundraiser/FundraiserCard";
+import NGOs from "./admin/components/NGOs";
+import NGODetails from "./admin/components/NGODetails";
 
 const App = () => {
   const { token, login, logout, userId, type } = useAuth();
 
   let routes;
 
-  if (token && type === "homeowner") {
+  if(token && type === "admin"){
+    routes = (
+      <Switch>
+      <Route path='/fundraiser' exact>
+        <FundraiserCard></FundraiserCard>
+      </Route>
+      <Route path='/createfundraiser' exact>
+        <CreateFundraiser></CreateFundraiser>
+      </Route>
+        <Route path='/admin' exact>
+          <NGOs></NGOs>
+        </Route>
+        <Route path='/ngodetails/:id' exact>
+          <NGODetails></NGODetails>
+        </Route>
+        <Redirect to='/admin' />
+        </Switch>
+
+    );
+  }
+
+  else if (token && type === "homeowner") {
     routes = (
       <Switch>
         <Route path='/fundraiser' exact>

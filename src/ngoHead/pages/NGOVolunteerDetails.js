@@ -59,7 +59,7 @@ const NGOVolunteerDetails = () => {
                 style={{ width: "68rem", margin: "2rem" }}>
                 <Table className={classes.table} aria-label='simple table'>
                   <TableHead>
-                    <TableRow>
+                    <TableRow hover>
                       <TableCell align='center'>Volunteer Image</TableCell>
                       <TableCell align='center'>Volunteer Name</TableCell>
                       <TableCell align='center'>Email</TableCell>
