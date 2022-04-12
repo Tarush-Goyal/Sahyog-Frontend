@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { AuthContext } from "../../shared/context/auth-context";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -24,7 +25,9 @@ import axios from "axios";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
+import { useParams } from "react-router-dom";
 import Select from "@material-ui/core/Select";
+
 
 const useStyles = makeStyles({
   table: {
@@ -38,20 +41,32 @@ const useStyles = makeStyles({
 const ActiveDonations = () => {
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
   const classes = useStyles();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const [approvalStatus, setApprovalStatus] = useState("");
   const [requests, setActiveRequests] = useState([]);
   const [originalRequests, setoriginalRequests] = useState([]);
   const [filter, setFilter] = useState("default");
   const [currentIndex, setIndex] = useState(0);
   const [dialogName, setDialogName] = useState("");
   const [prefer,setPreferred] = useState();
+  const id = useParams().id;
+  //const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('sm');
   const { token, login, logout, userId, type } = useAuth();
+  const auth = useContext(AuthContext);
+
 
   const handleClickOpen = (index) => {
     setOpen(true);
     setIndex(index);
     setDialogName(requests[index].itemName);
+  };
+
+  const handleClickOpen2 = (index) => {
+    setOpen2(true);
+    // setIndex(index);
+    // setDialogName(requests[index].itemName);
   };
 
   const authSubmitHandler = async (event) => {
@@ -103,16 +118,35 @@ const ActiveDonations = () => {
   }, [filter]);
 
   useEffect(() => {
+    console.log("entered use effect");
     const activeDonations = async () => {
       try {
         const responseData = await sendRequest(
           `${Path}api/volunteer/activeDonationRequest`
         );
 
-        const preferred = await sendRequest(
-          `${Path}api/admin/sendPreferred`
+          //here id is volunteer id
+          console.log(responseData);
+
+        const volunteerDetails = await sendRequest(
+          `${Path}api/volunteer/singlevolunteerdetails/${id}`
         );
 
+        console.log("volunteer details:"+volunteerDetails);
+
+        if(volunteerDetails.approval!='approved'){
+          if(volunteerDetails.approval=='pending'){
+            setApprovalStatus("You are not yet approved by the NGO Head");
+          }else{
+            setApprovalStatus("You have been rejected by the NGO Head");
+          }
+          handleClickOpen2();
+        }
+
+        const preferred = await sendRequest(
+          `${Path}api/admin/sendPreferred/${volunteerDetails.nameNGO}`
+        );
+          console.log("preferred:")
         console.log(preferred.items);
         setPreferred(preferred.items.preferred);
 
@@ -147,7 +181,24 @@ const ActiveDonations = () => {
   return (
     <>
       <ErrorModal error={error} onClear={clearError} />
-
+      <Dialog BackdropProps={{style: {backgroundColor: "rgba(0, 0, 0, 0.5)", backdropFilter: "blur(3px)"}} }
+        open={open2}
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'>
+        <DialogTitle id='alert-dialog-title'>
+          Approval Status
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id='alert-dialog-description'>
+           {approvalStatus}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+        <Button color='inherit' onClick={auth.logout}>
+              LOGOUT
+            </Button>
+        </DialogActions>
+      </Dialog>
       <Dialog
         open={open}
         onClose={handleClose}

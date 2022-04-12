@@ -55,7 +55,7 @@ const NGOs = () => {
   return (
     <>
       <ErrorModal error={error} onClear={clearError} />
-      <SimplePaper elevation="24" title="Data Analytics"></SimplePaper>
+      <SimplePaper elevation="24" title="Current NGOs"></SimplePaper>
       <Box display="flex" flexDirection="row" justifyContent="center">
         <Box>
           <Card style={{backgroundColor: "#f5f5f5", width: "74rem"}}>
@@ -82,7 +82,7 @@ const NGOs = () => {
                     <TableBody>
                       {ngos.map((ngo, index) => (
                         <>
-                          <TableRow key={index} hover onClick={()=>{
+                          <TableRow key={index} hover style={{cursor:"pointer"}} onClick={()=>{
                             history.push(`/ngodetails/${ngo._id}`)
                           }
                         }

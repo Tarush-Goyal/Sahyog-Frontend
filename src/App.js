@@ -5,7 +5,7 @@ import {
   Redirect,
   Switch,
 } from "react-router-dom";
-import DonationsTable from "./volunteer/pages/ActiveDonations";
+import ActiveDonations from "./volunteer/pages/ActiveDonations";
 import DonationsTemplate from "./user/pages/DonationsTemplate";
 import SimpleTabs from "./user/components/SimpleTabs";
 import MainHeader from "./shared/components/Navigation/MainHeader";
@@ -27,7 +27,7 @@ const App = () => {
 
   let routes;
 
-  if(token && type === "admin"){
+  if(token && userId && type === "admin"){
     routes = (
       <Switch>
       <Route path='/fundraiser' exact>
@@ -48,7 +48,7 @@ const App = () => {
     );
   }
 
-  else if (token && type === "homeowner") {
+  else if (token && userId && type === "homeowner") {
     routes = (
       <Switch>
         <Route path='/fundraiser' exact>
@@ -89,7 +89,7 @@ const App = () => {
     );
   }
 
-  if (token && type === "volunteer") {
+  if (token && userId && type === "volunteer") {
     routes = (
       <Switch>
         <Route path='/fundraiser' exact>
@@ -98,8 +98,8 @@ const App = () => {
         <Route path='/createfundraiser' exact>
           <CreateFundraiser></CreateFundraiser>
         </Route>
-        <Route path='/requests' exact>
-          <DonationsTable></DonationsTable>
+        <Route path='/requests/:id' exact>
+          <ActiveDonations></ActiveDonations>
         </Route>
         <Route path='/status/:id' exact>
           <DonationsStatus></DonationsStatus>
@@ -107,7 +107,7 @@ const App = () => {
         <Route path='/leaderboard/:id' exact>
           <VolunteerLeaderboard></VolunteerLeaderboard>
         </Route>
-        <Redirect to='/requests' />
+        <Redirect to={"/requests/" + userId} />
       </Switch>
     );
   } else if (!token) {

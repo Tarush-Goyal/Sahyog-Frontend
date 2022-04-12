@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -20,16 +20,22 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import { AuthContext } from "../../shared/context/auth-context";
+//import { useAuth } from "../../shared/hooks/auth-hook";
+
+
 export default function VolunteerRequests(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [volunteers, setVolunteers] = React.useState();
     const [open2, setOpen2] = React.useState();
+    const auth = useContext(AuthContext);
+    // const { token, login, logout, userId, type } = useAuth();
 
   useEffect(() => {
      const fetchVolunteers = async () => {
 
-    await axios.get(`${Path}api/ngohead/volunteersNotApproved/${props.id}`,)
+    await axios.get(`${Path}api/ngohead/volunteersNotApproved/${auth.userId}`)
           .then((response) => {
             console.log(response.data.items);
             setVolunteers(response.data.items);

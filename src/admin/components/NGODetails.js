@@ -19,7 +19,6 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import axios from "axios";
-// import {useHttpClient} from "../../shared/hooks/http-hook";
 import {useLocation, useParams} from "react-router-dom";
 
 const NGODetails = () => {
@@ -113,9 +112,9 @@ const NGODetails = () => {
   return (
     <>
       <ErrorModal error={error} onClear={clearError} />
-      <SimplePaper elevation="24" title="Data Analytics"></SimplePaper>
+      <SimplePaper elevation="24" title="NGO Details"></SimplePaper>
       {ngo && (
-        <Paper style={{backgroundColor: "white", height: "140vh"}}>
+        <Paper style={{backgroundColor: "white", height: "100%"}}>
           <Box display="flex" flexDirection="column" style={{width: "100%"}}>
             <Box
               display="flex"
@@ -135,25 +134,36 @@ const NGODetails = () => {
               <Box
                 display="flex"
                 flexDirection="column"
-                className={classes.root}
-
-              >
+                className={classes.root}>
+                  <Box display="flex"
+              flexDirection="row"
+              justifyContent="center">
                 <Typography variant="h4" component="div" gutterBottom>
                   NGO Head
                 </Typography>
+                </Box>
                 <Avatar image={`${Path}${ngo.image}`} alt={ngo.name} />
-                <Typography variant="h4" component="div" gutterBottom>
+                <Box display="flex"
+              flexDirection="row"
+              justifyContent="center"> 
+                <Typography variant="h4" component="div" gutterBottom style={{marginTop:"1rem"}}>
                   {ngo.name}
                 </Typography>
-
+                </Box>
               </Box>
 
-              <Box>
+              <Box display="flex"
+              flexDirection="column"
+              justifyContent="center">
+                <Box display="flex"
+              flexDirection="row"
+              justifyContent="center">
                 <Typography variant="h4" component="div" gutterBottom>
                   Description
                 </Typography>
-                <Box borderRadius={25} {...defaultProps}>
-                  <Typography variant="h6" component="div" gutterBottom>
+                </Box>
+                <Box borderRadius={25} {...defaultProps} >
+                  <Typography variant="h6" component="div" gutterBottom style={{padding:"1.5rem"}}>
                     {ngo.descriptionNGO}
                   </Typography>
                 </Box>
