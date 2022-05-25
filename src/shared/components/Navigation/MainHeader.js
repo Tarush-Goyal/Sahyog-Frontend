@@ -105,7 +105,7 @@ const MainHeader = () => {
               </Button>
             </Box>
           )}
-          {auth.type === "head" && (
+          {auth.type === "head" && auth.userId && (
             <Box display='flex' flexDirection='row'>
               <Button
                 color='inherit'
@@ -138,7 +138,7 @@ const MainHeader = () => {
               </Button>
             </Box>
           )}
-          {auth.type === "volunteer" && (
+          {auth.type === "volunteer" && auth.userId && (
             <Box>
               <Button
                 color='inherit'

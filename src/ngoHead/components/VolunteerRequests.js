@@ -21,7 +21,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { AuthContext } from "../../shared/context/auth-context";
-//import { useAuth } from "../../shared/hooks/auth-hook";
+import { useAuth } from "../../shared/hooks/auth-hook";
 
 
 export default function VolunteerRequests(props) {
@@ -30,12 +30,19 @@ export default function VolunteerRequests(props) {
   const [volunteers, setVolunteers] = React.useState();
     const [open2, setOpen2] = React.useState();
     const auth = useContext(AuthContext);
-    // const { token, login, logout, userId, type } = useAuth();
+    const { token, login, logout, userId, type } = useAuth();
+
 
   useEffect(() => {
+    console.log("props id:")
+    console.log(props.id);
+    console.log("auth id:")
+    console.log(auth.id);
+    console.log("useAuth id:")
+    console.log(userId);
      const fetchVolunteers = async () => {
 
-    await axios.get(`${Path}api/ngohead/volunteersNotApproved/${auth.userId}`)
+    await axios.get(`${Path}api/ngohead/volunteersNotApproved/${props.id}`)
           .then((response) => {
             console.log(response.data.items);
             setVolunteers(response.data.items);

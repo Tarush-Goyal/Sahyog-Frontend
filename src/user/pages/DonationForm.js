@@ -1,5 +1,5 @@
 import "date-fns";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -107,7 +107,6 @@ const DonationForm = () => {
       landmark: "",
     },
   });
-
   const [category, setCategory] = React.useState("");
 
   const handleCategoryChange = (event) => {
@@ -208,7 +207,16 @@ const DonationForm = () => {
   let [user1, setUser] = useState("homeowner");
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const [lat, setLat] = useState();
+  const [address, setAddress] = useState({})
+  // const [lat, setLat] = useStateWithCallbackLazy(0);
+  // const [long, setLong] = useStateWithCallbackLazy(0);
+  const [long, setLong] = useState();
 
+
+
+
+  
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
@@ -230,6 +238,82 @@ const DonationForm = () => {
   const validEmailRegex = RegExp(
     /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/
   );
+
+  const checkCoordinates = () => {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      console.log("Latitude is :", position.coords.latitude);
+      console.log("Longitude is :", position.coords.longitude);
+      setLat(position.coords.latitude);
+      setLong(position.coords.longitude);
+
+    });
+
+  }
+
+  useEffect(()=>{
+    console.log('Current lat ', lat);
+  }, [lat]);
+
+  useEffect(()=>{
+    console.log('Current long ', long);
+    getAddress();
+  }, [long]);
+
+  useEffect(()=>{
+    if(address.length>0){
+    console.log('Current address ', address);
+    let values = validation.values;
+    values.city = address[4].long_name;
+    values.state = address[6].long_name;
+    values.pincode = address[8].long_name;
+    values.landmark = '-';
+    values.house = '-';
+    // values.house = address[0].long_name;
+    values.street = address[0].long_name + " " + address[1].long_name + " " + address[2].long_name + " " + address[3].long_name;
+    setValidation((prevState) => ({
+      ...prevState,
+      values: { ...values },
+    }));
+  }
+  }, [address]);
+
+
+
+
+  const getAddress = () => {
+    const KEY = "AIzaSyCnRU7Azq92cx63G4wr0UqFItdXGaq0ztY";
+    console.log("lat: "+lat+" long: "+long);
+    let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&key=${KEY}`;
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.results[1].address_components);
+        setAddress(data.results[1].address_components)
+
+      })
+      .catch(err => console.warn(err.message));
+
+
+
+
+      
+
+
+
+
+
+
+
+
+
+
+
+    // console.log("enat")
+    // fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${long}&sensor=false&key=AIzaSyCnRU7Azq92cx63G4wr0UqFItdXGaq0ztY`)
+    // .then( response => response.json() )
+    // .then( data => console.log(data) )
+    // .catch( err => alert(err) );
+  }
 
   const authSubmitHandler = async (event) => {
     console.log("image:" + imageFile.name);
@@ -328,6 +412,7 @@ const DonationForm = () => {
                 onBlur={handleFormChange}
                 onChange={handleFormChange}
                 style={{ width: "20rem" }}
+                // ref='name'
               />
             </Box>
             <Box
@@ -349,7 +434,7 @@ const DonationForm = () => {
                   onBlur={handleCategoryChange}
                   name='category'>
                   <MenuItem value={"clothes"}>Clothes</MenuItem>
-                  <MenuItem value={"shoes"}>Shoes</MenuItem>
+                  <MenuItem value={""}>Shoes</MenuItem>
                   <MenuItem value={"books"}>Books</MenuItem>
                   <MenuItem value={"food"}>Food</MenuItem>
                   <MenuItem value={"stationary"}>Stationary</MenuItem>
@@ -443,6 +528,18 @@ const DonationForm = () => {
                 m={1}
               />
             </Box>
+            <Box display='flex'
+              flexDirection='row' justifyContent='space-around'>
+            <Button
+                variant='contained'
+                color='primary'
+                onClick={()=>{
+                  checkCoordinates();
+                }}
+                style={{ width: "16rem" }}>
+                Get current location
+              </Button>
+            </Box>
             <Box
               display='flex'
               flexDirection='row'
@@ -458,8 +555,10 @@ const DonationForm = () => {
                 onBlur={handleFormChange}
                 onChange={handleFormChange}
                 style={{ width: "30rem" }}
+                value={validation.values.street}
                 multiline
               />
+
             </Box>
             <Box
               display='flex'
@@ -476,6 +575,7 @@ const DonationForm = () => {
                 onBlur={handleFormChange}
                 onChange={handleFormChange}
                 style={{ width: "30rem" }}
+                value={validation.values.landmark}
               />
               {/* <input type='text'></input> */}
             </Box>
@@ -501,6 +601,7 @@ const DonationForm = () => {
                   onBlur={handleFormChange}
                   onChange={handleFormChange}
                   style={{ width: "10rem" }}
+                  value={validation.values.city}
                 />
                 <TextField
                   error={validation.errors.state.length > 0}
@@ -512,6 +613,7 @@ const DonationForm = () => {
                   onBlur={handleFormChange}
                   onChange={handleFormChange}
                   style={{ width: "10rem" }}
+                  value={validation.values.state}
                 />
               </Box>
             </Box>
@@ -537,17 +639,19 @@ const DonationForm = () => {
                   onBlur={handleFormChange}
                   onChange={handleFormChange}
                   style={{ width: "10rem" }}
+                  value={validation.values.pincode}
                 />
                 <TextField
                   error={validation.errors.house.length > 0}
                   id='house'
                   name='house'
                   type='text'
-                  label='House No'
+                  label='House'
                   helperText={validation.errors.house}
                   onBlur={handleFormChange}
                   onChange={handleFormChange}
                   style={{ width: "5rem" }}
+                  value={validation.values.house}
                 />
               </Box>
             </Box>

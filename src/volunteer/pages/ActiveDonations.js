@@ -66,14 +66,14 @@ const ActiveDonations = () => {
   const handleClickOpen2 = (index) => {
     setOpen2(true);
     // setIndex(index);
-    // setDialogName(requests[index].itemName);
+    // setDialogName(requests[index].itemName)
   };
 
   const authSubmitHandler = async (event) => {
     let data = {
       ...requests[currentIndex],
     };
-    data.volunteerId = userId;
+    data.volunteerId = id;
     // console.log(data);
     try {
       axios
@@ -105,13 +105,17 @@ const ActiveDonations = () => {
   useEffect(() => {
     const filterRequests = () => {
       if (filter == "recommended") {
-        setoriginalRequests(requests);
-        let request = requests.filter((filter) => {
-          return filter.category == prefer;
+        let request = originalRequests.filter((request) => {
+          return request.category == prefer;
         });
         setActiveRequests(request);
-      } else {
+      } else if (filter == "default"){
         setActiveRequests(originalRequests);
+      } else{
+        let request = originalRequests.filter((request) => {
+          return request.category == filter;
+        });
+        setActiveRequests(request);
       }
     };
     filterRequests();
@@ -173,6 +177,7 @@ const ActiveDonations = () => {
         }));
 
         setActiveRequests(result);
+        setoriginalRequests(result);
       } catch (err) {}
     };
     activeDonations();
@@ -243,6 +248,12 @@ const ActiveDonations = () => {
           <Select id='filter' value={filter} onChange={handleSelectChange}>
             <MenuItem value={"default"}>Default</MenuItem>
             <MenuItem value={"recommended"}>Recommended</MenuItem>
+            <MenuItem value={"clothes"}>Clothes</MenuItem>
+            <MenuItem value={""}>Shoes</MenuItem>
+            <MenuItem value={"books"}>Books</MenuItem>
+            <MenuItem value={"food"}>Food</MenuItem>
+            <MenuItem value={"stationary"}>Stationary</MenuItem>
+            <MenuItem value={"covid"}>Covid</MenuItem>
           </Select>
         </FormControl>
 
